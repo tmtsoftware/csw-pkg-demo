@@ -26,7 +26,7 @@ To compile the Scala/Akka code, type "sbt" and then:
 The stage task creates the distribution with the scripts for the applications
 (found under the target/universal/stage/bin directories).
 
-Note: See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs/README.md</a> for how to setup the ExtJS
+Note: See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for how to setup the ExtJS
 based web UI used below. You need to install and run some "sencha" commands once to prepare the web app, otherwise
 the generated CSS file will not be found and the web app will not display properly.
 
@@ -36,7 +36,7 @@ To run the demo: Open terminal windows or tabs in these directories and run thes
 * cd hardware/src/main/c; mtserver2 disperser
 
 Optionally, if you want to test with the 
-<a href="../play-demo/README.md">play-demo</a> web app:
+<a href="https://github.com/tmtsoftware/csw-play-demo">play-demo</a> web app:
 
 * cd hardware/src/main/c; mtserver2 pos    # last part of config path for base pos and ao pos
 * cd hardware/src/main/c; mtserver2 one
@@ -50,7 +50,7 @@ Then start the two Akka containers (The order is not important here):
 * cd container2/target/universal/stage/bin; ./container2
 * cd container1/target/universal/stage/bin; ./container1
 
-Optionally start the <a href="../play-demo/README.md">play-demo</a> web app:
+Optionally start the <a href="https://github.com/tmtsoftware/csw-play-demo">play-demo</a> web app:
 
 * cd ../play-demo; play run            # then open http://localhost:9000 in a browser
 
