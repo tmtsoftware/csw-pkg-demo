@@ -26,7 +26,7 @@ To compile the Scala/Akka code, type "sbt" and then:
 The stage task creates the distribution with the scripts for the applications
 (found under the target/universal/stage/bin directories).
 
-Note: See <a href="../csw-extjs/README.md">../csw-extjs/README.md</a> for how to setup the ExtJS
+Note: See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs/README.md</a> for how to setup the ExtJS
 based web UI used below. You need to install and run some "sencha" commands once to prepare the web app, otherwise
 the generated CSS file will not be found and the web app will not display properly.
 
@@ -59,7 +59,7 @@ Or: Access the Spray/ExtJS based web app:
 * open http://localhost:8089 in a browser for the Ext JS version and select the development
 (JavaScript source) or production (compiled, minified) version. Note that you need to
 compile the ExtJS code at least once to get the required CSS file generated.
-See <a href="../csw-extjs/README.md">../csw-extjs/README.md</a> for instructions.
+See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for instructions.
 
 Enter the values in the form and press Submit. The status of the command is shown below the button and updated
 while the command is running.
