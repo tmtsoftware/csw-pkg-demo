@@ -1,5 +1,5 @@
-CSW Command Service Demo
-========================
+CSW Command Service Package Demo
+================================
 
 This project contains standalone applications for testing the command service, 
 Container, Assembly and HCD components and is based on
