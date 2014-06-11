@@ -1,7 +1,6 @@
-package org.tmt.csw.test.container2
+package csw.pkgDemo.container2
 
-import akka.actor.{ActorSystem, Props, Actor}
-import akka.util.ByteString
+import akka.actor.Actor
 
 // Dummy class for testing (XXX Needs update for Scala-2.11)
 object HwClient {

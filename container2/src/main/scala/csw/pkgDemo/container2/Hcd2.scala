@@ -1,9 +1,9 @@
-package org.tmt.csw.test.container2
+package csw.pkgDemo.container2
 
 import akka.actor.Props
-import org.tmt.csw.pkg.Hcd
-import org.tmt.csw.cmd.akka.{CommandServiceActor, OneAtATimeCommandQueueController}
-import org.tmt.csw.ls.LocationServiceActor.{ServiceType, ServiceId}
+import csw.services.pkg.Hcd
+import csw.services.cmd.akka.{CommandServiceActor, OneAtATimeCommandQueueController}
+import csw.services.ls.LocationServiceActor.{ServiceType, ServiceId}
 
 // A test HCD that is configured with the given name and config path
 object Hcd2 {

@@ -1,4 +1,4 @@
-package org.tmt.csw.test.container2
+package csw.pkgDemo.container2
 
 import akka.actor.{Props, Actor, ActorLogging}
 import akka.util.ByteString

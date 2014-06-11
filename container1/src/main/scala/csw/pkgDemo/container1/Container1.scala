@@ -1,8 +1,8 @@
-package org.tmt.csw.test.container1
+package csw.pkgDemo.container1
 
 import akka.actor._
-import org.tmt.csw.pkg.Container
-import org.tmt.csw.cmd.akka.CommandStatus
+import csw.services.pkg.Container
+import csw.services.cmd.akka.CommandStatus
 import scala.concurrent.duration._
 
 object Container1 {

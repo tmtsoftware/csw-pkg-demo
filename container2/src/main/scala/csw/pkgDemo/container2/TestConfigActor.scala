@@ -1,16 +1,16 @@
-package org.tmt.csw.test.container2
+package csw.pkgDemo.container2
 
 import akka.actor._
-import org.tmt.csw.cmd.akka.{CommandStatus, ConfigActor, RunId}
+import csw.services.cmd.akka.{CommandStatus, ConfigActor, RunId}
 import org.zeromq.ZMQ
-import org.tmt.csw.cmd.akka.CommandQueueActor.SubmitWithRunId
+import csw.services.cmd.akka.CommandQueueActor.SubmitWithRunId
 import akka.util.ByteString
 import scala.util.{Failure, Success}
-import org.tmt.csw.cmd.akka.ConfigActor._
+import csw.services.cmd.akka.ConfigActor._
 import com.typesafe.config.ConfigFactory
 import akka.pattern.ask
 import scala.concurrent.duration._
-import org.tmt.csw.util.Configuration
+import csw.util.Configuration
 
 object TestConfigActor {
   def props(commandStatusActor: ActorRef, configKey: String, numberOfSecondsToRun: Int = 2): Props =

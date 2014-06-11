@@ -1,7 +1,7 @@
-package org.tmt.csw.test.container2
+package csw.pkgDemo.container2
 
 import akka.actor._
-import org.tmt.csw.pkg.Container
+import csw.services.pkg.Container
 
 object Container2 {
   // Container2 main

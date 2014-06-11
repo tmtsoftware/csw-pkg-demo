@@ -1,12 +1,12 @@
-package org.tmt.csw.test.container1
+package csw.pkgDemo.container1
 
 import akka.actor.Props
-import org.tmt.csw.pkg.Assembly
-import org.tmt.csw.cmd.akka.{AssemblyCommandServiceActor, OneAtATimeCommandQueueController}
-import org.tmt.csw.cmd.akka.CommandQueueActor.SubmitWithRunId
+import csw.services.pkg.Assembly
+import csw.services.cmd.akka.{AssemblyCommandServiceActor, OneAtATimeCommandQueueController}
+import csw.services.cmd.akka.CommandQueueActor.SubmitWithRunId
 import java.util.Date
-import org.tmt.csw.ls.LocationServiceActor.{ServiceType, ServiceId}
-import org.tmt.csw.cmd.spray.CommandServiceHttpServer
+import csw.services.ls.LocationServiceActor.{ServiceType, ServiceId}
+import csw.services.cmd.spray.CommandServiceHttpServer
 
 object Assembly1 {
   def props(name: String): Props = Props(classOf[Assembly1], name)
