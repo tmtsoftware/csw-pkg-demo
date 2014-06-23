@@ -7,6 +7,7 @@ import csw.services.cmd.akka.CommandQueueActor.SubmitWithRunId
 import java.util.Date
 import csw.services.ls.LocationServiceActor.{ServiceType, ServiceId}
 import csw.services.cmd.spray.CommandServiceHttpServer
+import csw.util.cfg.Configurations.SetupConfigList
 
 object Assembly1 {
   def props(name: String): Props = Props(classOf[Assembly1], name)
@@ -48,12 +49,13 @@ case class Assembly1(name: String)
     log.debug(s"Submit with runId(${s.runId}) ${s.config}")
 
     // Test changing the contents of the config
-    val config = if (s.config.hasPath("config.tmt.mobie.blue.filter.value")) {
-      s.config.withValue("config.tmt.mobie.blue.filter.timestamp", new Date().getTime)
-    } else {
-      s.config
-    }
-    commandQueueActor ! SubmitWithRunId(config, s.submitter, s.runId)
+    val confs = for (config <- s.config.asInstanceOf[SetupConfigList])
+    yield if (config.prefix == "tmt.mobie.blue.filter") {
+        config.withValues("timestamp" -> new Date().getTime)
+      } else {
+        config
+      }
+    commandQueueActor ! SubmitWithRunId(confs, s.submitter, s.runId)
   }
 
 

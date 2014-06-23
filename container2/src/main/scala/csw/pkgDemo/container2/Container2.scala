@@ -22,12 +22,12 @@ class Container2Actor extends Actor with ActorLogging {
   }
   val container = Container.create("Container-2")
 
-  val hcd2aProps = Hcd2.props("HCD-2A", "config.tmt.mobie.blue.filter")
-  val hcd2bProps = Hcd2.props("HCD-2B", "config.tmt.mobie.blue.disperser")
+  val hcd2aProps = Hcd2.props("HCD-2A", "tmt.mobie.blue.filter")
+  val hcd2bProps = Hcd2.props("HCD-2B", "tmt.mobie.blue.disperser")
 
   // For the Play Framework Demo
-  val hcd2cProps = Hcd2.props("HCD-2C", "config.tmt.tel.base.pos")
-  val hcd2dProps = Hcd2.props("HCD-2D", "config.tmt.tel.ao.pos.one")
+  val hcd2cProps = Hcd2.props("HCD-2C", "tmt.tel.base.pos")
+  val hcd2dProps = Hcd2.props("HCD-2D", "tmt.tel.ao.pos.one")
 
   container ! Container.CreateComponent(hcd2aProps, "HCD-2A")
   container ! Container.CreateComponent(hcd2bProps, "HCD-2B")

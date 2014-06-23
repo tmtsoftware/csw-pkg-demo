@@ -10,7 +10,10 @@ import csw.services.cmd.akka.ConfigActor._
 import com.typesafe.config.ConfigFactory
 import akka.pattern.ask
 import scala.concurrent.duration._
-import csw.util.Configuration
+import csw.util.cfg.ConfigJsonFormats
+import csw.util.cfg.Configurations._
+import spray.json._
+
 
 object TestConfigActor {
   def props(commandStatusActor: ActorRef, configKey: String, numberOfSecondsToRun: Int = 2): Props =
@@ -36,7 +39,7 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
   val zmqClient = context.actorOf(ZmqClient.props(url))
 
   // XXX temp: change to get values over ZMQ from hardware simulation
-  var savedConfig: Option[Configuration] = None
+  var savedConfig: Option[SetupConfigList] = None
 
 
   // Receive
@@ -44,20 +47,22 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
 
   /**
    * Called when a configuration is submitted
+   * (XXX Fix this so the ZMQ C code saves the value)
    */
   override def submit(submit: SubmitWithRunId): Unit = {
     // Save the config for this test, so that query can return it later
-    savedConfig = Some(submit.config)
+    savedConfig = Some(submit.config.asInstanceOf[SetupConfigList])
     log.info("Sending dummy message to ZMQ hardware simulation")
 
     // Note: We could just send the JSON and let the C code parse it, but for now, keep it simple
     // and extract the value here
+    val config = submit.config.head.asInstanceOf[SetupConfig]
     val value = configKey match {
-      case "filter" | "disperser" => submit.config.getString("value")
+      case "filter" | "disperser" => config("value").elems.head
       case "pos" | "one" =>
-        val c1 = submit.config.getString("c1")
-        val c2 = submit.config.getString("c2")
-        val equinox = submit.config.getString("equinox")
+        val c1 = config("c1").elems.head
+        val c2 = config("c2").elems.head
+        val equinox = config("equinox").elems.head
         s"$c1 $c2 $equinox"
       case _ => "error"
     }
@@ -65,7 +70,7 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
     // For this test, a timestamp value is inserted by assembly1 (Later the JSON can be just passed on to ZMQ)
     val zmqMsg = configKey match {
       case "filter" =>
-        val timestamp = submit.config.getString("timestamp")
+        val timestamp = config("timestamp").elems.head
         ByteString(s"$configKey=$value, timestamp=$timestamp", ZMQ.CHARSET.name())
       case _ =>
         ByteString(s"$configKey=$value", ZMQ.CHARSET.name())
@@ -122,27 +127,28 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
    * A config is passed in (the values are ignored) and the reply will be sent containing the
    * same config with the current values filled out.
    *
-   * @param config used to specify the keys for the values that should be returned
+   * @param configs used to specify the keys for the values that should be returned
    * @param replyTo reply to this actor with the config response
    *
    */
-  override def query(config: Configuration, replyTo: ActorRef): Unit = {
+  override def query(configs: SetupConfigList, replyTo: ActorRef): Unit = {
     // XXX TODO: replace savedConfig and get values over ZMQ from hardware simulation
-    val conf = savedConfig match {
+    val confs = savedConfig match {
       case Some(c) => c
       case None =>
+        for(config <- configs) yield
         if (configKey == "filter") {
-          config.withValue("value", "None")
+          config.withValues("value" -> "None")
         } else if (configKey == "disperser") {
-          config.withValue("value", "Mirror")
+          config.withValues("value" -> "Mirror")
         } else if (configKey == "pos") {
-          config.withValue("posName", "m653").withValue("c1", "03:19:34.2").withValue("c2", "31:23:21.5").withValue("equinox", "J2000")
+          config.withValues("posName" -> "m653", "c1" -> "03:19:34.2", "c2" -> "31:23:21.5", "equinox" -> "J2000")
         } else if (configKey == "one") {
-          config.withValue("c1", "03:20:29.2").withValue("c2", "31:24:02.1").withValue("equinox", "J2000")
+          config.withValues("c1" -> "03:20:29.2", "c2" -> "31:24:02.1", "equinox" -> "J2000")
         } else config
     }
 
-    sender() ! ConfigResponse(Success(conf))
+    sender() ! ConfigResponse(Success(confs))
   }
 }
 
