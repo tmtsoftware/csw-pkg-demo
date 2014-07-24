@@ -43,7 +43,7 @@ Optionally, if you want to test with the
 
 Start the location service (This has to be running before any HCDs or assemblies are started):
 
-* cd ../csw/ls/target/universal/stage/bin; ./loc
+* cd ../csw/loc/target/universal/stage/bin; ./loc
 
 Then start the two Akka containers (The order is not important here):
 
