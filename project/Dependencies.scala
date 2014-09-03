@@ -17,11 +17,14 @@ object Dependencies {
   val akkaActor      = "com.typesafe.akka"             %% "akka-actor"            % akkaVersion
   val akkaKernel     = "com.typesafe.akka"             %% "akka-kernel"           % akkaVersion
   val akkaRemote     = "com.typesafe.akka"             %% "akka-remote"           % akkaVersion
+  val akkaSlf4j      = "com.typesafe.akka"             %% "akka-slf4j"            % akkaVersion
 
   val jeromq         = "org.zeromq"                     % "jeromq"                % "0.3.3"
   val typesafeConfig = "com.typesafe"                   % "config"                % "1.2.0"
   val scalaLogging   = "com.typesafe.scala-logging"    %% "scala-logging-slf4j"   % "2.1.2"
   val logback        = "ch.qos.logback"                 % "logback-classic"       % "1.1.1"
+
+  val logstashLogbackEncoder = "net.logstash.logback"   % "logstash-logback-encoder" % "3.1"
 
   val sprayCan       = "io.spray"                      %% "spray-can"             % sprayVersion
   val sprayClient    = "io.spray"                      %% "spray-client"          % sprayVersion
