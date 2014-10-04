@@ -13,7 +13,7 @@ import scala.concurrent.duration._
 import csw.util.cfg.ConfigJsonFormats
 import csw.util.cfg.Configurations._
 import spray.json._
-
+import scala.language.postfixOps
 
 object TestConfigActor {
   def props(commandStatusActor: ActorRef, configKey: String, numberOfSecondsToRun: Int = 2): Props =
