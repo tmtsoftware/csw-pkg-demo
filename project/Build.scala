@@ -10,7 +10,7 @@ object Build extends Build {
 
   lazy val container1 = project
     .settings(packageSettings: _*)
-    .settings(bashScriptExtraDefines ++= Seq("addJava -Dapplication-name=container1 -Dcsw.extjs.root="
+    .settings(bashScriptExtraDefines ++= Seq("addJava -Dcsw.extjs.root="
       + file("../csw-extjs").absolutePath))
     .settings(libraryDependencies ++=
       provided(akkaActor) ++
@@ -19,7 +19,6 @@ object Build extends Build {
 
   lazy val container2 = project
     .settings(packageSettings: _*)
-    .settings(bashScriptExtraDefines ++= Seq("addJava -Dapplication-name=container2"))
     .settings(libraryDependencies ++=
       provided(akkaActor) ++
       compile(akkaKernel, akkaRemote, jeromq, pkg, log)

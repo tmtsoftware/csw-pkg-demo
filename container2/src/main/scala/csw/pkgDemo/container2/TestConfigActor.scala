@@ -1,11 +1,11 @@
 package csw.pkgDemo.container2
 
 import akka.actor._
-import csw.services.cmd.akka.{CommandStatus, ConfigActor, RunId}
+import csw.services.cmd.akka.{ CommandStatus, ConfigActor, RunId }
 import org.zeromq.ZMQ
 import csw.services.cmd.akka.CommandQueueActor.SubmitWithRunId
 import akka.util.ByteString
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 import csw.services.cmd.akka.ConfigActor._
 import com.typesafe.config.ConfigFactory
 import akka.pattern.ask
@@ -32,7 +32,6 @@ object TestConfigActor {
 class TestConfigActor(override val commandStatusActor: ActorRef, configKey: String,
                       numberOfSecondsToRun: Int) extends ConfigActor {
 
-
   val url = TestConfigActor.config.getString(s"TestConfigActor.$configKey.url")
   log.info(s"For $configKey: using ZMQ URL = $url")
 
@@ -40,7 +39,6 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
 
   // XXX temp: change to get values over ZMQ from hardware simulation
   var savedConfig: Option[SetupConfigList] = None
-
 
   // Receive
   override def receive: Receive = receiveConfigs
@@ -58,27 +56,27 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
     // and extract the value here
     val config = submit.config.head.asInstanceOf[SetupConfig]
     val value = configKey match {
-      case "filter" | "disperser" => config("value").elems.head
-      case "pos" | "one" =>
+      case "filter" | "disperser" ⇒ config("value").elems.head
+      case "pos" | "one" ⇒
         val c1 = config("c1").elems.head
         val c2 = config("c2").elems.head
         val equinox = config("equinox").elems.head
         s"$c1 $c2 $equinox"
-      case _ => "error"
+      case _ ⇒ "error"
     }
 
     // For this test, a timestamp value is inserted by assembly1 (Later the JSON can be just passed on to ZMQ)
     val zmqMsg = configKey match {
-      case "filter" =>
+      case "filter" ⇒
         val timestamp = config("timestamp").elems.head
         ByteString(s"$configKey=$value, timestamp=$timestamp", ZMQ.CHARSET.name())
-      case _ =>
+      case _ ⇒
         ByteString(s"$configKey=$value", ZMQ.CHARSET.name())
     }
 
     implicit val dispatcher = context.system.dispatcher
     ask(zmqClient, ZmqClient.Command(zmqMsg))(6 seconds) onComplete {
-      case Success(reply: ByteString) =>
+      case Success(reply: ByteString) ⇒
         val msg = reply.decodeString(ZMQ.CHARSET.name())
         log.info(s"ZMQ Message: $msg")
         val status = if (msg == "OK") {
@@ -88,11 +86,11 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
         }
         returnStatus(status, submit.submitter)
 
-      case Success(m) => // should not happen
+      case Success(m) ⇒ // should not happen
         val status = CommandStatus.Error(submit.runId, s"Unexpected ZMQ Message: $m")
         returnStatus(status, submit.submitter)
 
-      case Failure(ex) =>
+      case Failure(ex) ⇒
         val status = CommandStatus.Error(submit.runId, ex.getMessage)
         returnStatus(status, submit.submitter)
     }
@@ -134,10 +132,9 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
   override def query(configs: SetupConfigList, replyTo: ActorRef): Unit = {
     // XXX TODO: replace savedConfig and get values over ZMQ from hardware simulation
     val confs = savedConfig match {
-      case Some(c) => c
-      case None =>
-        for(config <- configs) yield
-        if (configKey == "filter") {
+      case Some(c) ⇒ c
+      case None ⇒
+        for (config ← configs) yield if (configKey == "filter") {
           config.withValues("value" -> "None")
         } else if (configKey == "disperser") {
           config.withValues("value" -> "Mirror")

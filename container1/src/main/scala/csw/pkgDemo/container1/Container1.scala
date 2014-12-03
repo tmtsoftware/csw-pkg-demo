@@ -19,14 +19,13 @@ class Container1Actor extends Actor with ActorLogging {
 
   // Receive actor messages
   def receive: Receive = {
-    case actorRef: ActorRef => log.info(s"Created actor component: $actorRef")
-    case status: CommandStatus => log.info(s"received command status: $status")
-    case x => log.warning(s"received unknown message $x")
+    case actorRef: ActorRef    ⇒ log.info(s"Created actor component: $actorRef")
+    case status: CommandStatus ⇒ log.info(s"received command status: $status")
+    case x                     ⇒ log.warning(s"received unknown message $x")
   }
 
   container ! Container.CreateComponent(assembly1Props, "Assembly-1")
 }
-
 
 /**
  * The settings for Container1
@@ -45,6 +44,4 @@ class Container1Settings(system: ExtendedActorSystem) extends Extension {
   val timeout: FiniteDuration = Duration(system.settings.config.getDuration("csw.test.assembly1-http.timeout", MILLISECONDS),
     MILLISECONDS)
 }
-
-
 

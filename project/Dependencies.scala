@@ -4,9 +4,8 @@ import sbt._
 
 object Dependencies {
 
-  val scalaVersion = "2.11.2"
-  val akkaVersion = "2.3.6"
-  val sprayVersion = "1.3.1-20140423"
+  val scalaVersion = "2.11.4"
+  val akkaVersion = "2.3.7"
 
   def compile   (deps: ModuleID*): Seq[ModuleID] = deps map (_ % "compile")
   def provided  (deps: ModuleID*): Seq[ModuleID] = deps map (_ % "provided")
@@ -19,16 +18,6 @@ object Dependencies {
   val akkaRemote     = "com.typesafe.akka"             %% "akka-remote"           % akkaVersion
 
   val jeromq         = "org.zeromq"                     % "jeromq"                % "0.3.3"
-  val typesafeConfig = "com.typesafe"                   % "config"                % "1.2.0"
-
-  val sprayCan       = "io.spray"                      %% "spray-can"             % sprayVersion
-  val sprayClient    = "io.spray"                      %% "spray-client"          % sprayVersion
-  val sprayRouting   = "io.spray"                      %% "spray-routing"         % sprayVersion
-  val sprayJson      = "io.spray"                      %% "spray-json"            % "1.2.6"
-  val sprayTestkit   = "io.spray"                      %% "spray-testkit"         % sprayVersion
-
-  val jgit           = "org.eclipse.jgit"               % "org.eclipse.jgit"      % "3.3.2.201404171909-r"
-  val scalaIoFile    = "com.github.scala-incubator.io" %% "scala-io-file"         % "0.4.3"
 
   // csw packages (installed with sbt publish-local)
   val pkg            = "org.tmt"                       %% "pkg"                     % Settings.Version

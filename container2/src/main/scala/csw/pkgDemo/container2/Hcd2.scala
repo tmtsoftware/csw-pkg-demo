@@ -2,8 +2,8 @@ package csw.pkgDemo.container2
 
 import akka.actor.Props
 import csw.services.pkg.Hcd
-import csw.services.cmd.akka.{CommandServiceActor, OneAtATimeCommandQueueController}
-import csw.services.ls.LocationServiceActor.{ServiceType, ServiceId}
+import csw.services.cmd.akka.{ CommandServiceActor, OneAtATimeCommandQueueController }
+import csw.services.ls.LocationServiceActor.{ ServiceType, ServiceId }
 
 // A test HCD that is configured with the given name and config path
 object Hcd2 {
@@ -19,7 +19,7 @@ case class Hcd2(name: String, configPath: String) extends Hcd with CommandServic
   registerWithLocationService(ServiceId(name, ServiceType.HCD), Some(configPath))
 
   override def receive: Receive = receiveComponentMessages orElse receiveCommands orElse {
-    case x => println(s"XXX HCD2: Received unknown message: $x")
+    case x ⇒ println(s"XXX HCD2: Received unknown message: $x")
   }
 
   // -- Implement Component methods --

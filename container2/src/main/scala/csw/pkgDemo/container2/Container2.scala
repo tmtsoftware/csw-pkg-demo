@@ -17,8 +17,8 @@ object Container2 {
 class Container2Actor extends Actor with ActorLogging {
 
   def receive: Receive = {
-    case actorRef: ActorRef => log.info(s"Created actor component: $actorRef")
-    case x => log.error(s"Received unknown message: $x")
+    case actorRef: ActorRef ⇒ log.info(s"Created actor component: $actorRef")
+    case x                  ⇒ log.error(s"Received unknown message: $x")
   }
   val container = Container.create("Container-2")
 
