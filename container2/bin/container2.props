@@ -1,0 +1,13 @@
+[scala]
+  version: 2.11.4
+[app]
+  org: org.tmt
+  name: container2
+  version: 0.1-SNAPSHOT
+  class: csw.services.apps.containerCmd.ContainerCmd
+  resources: container1
+  cross-versioned: binary
+[repositories]
+  local
+[boot]
+  directory: ${user.home}/.csw/boot

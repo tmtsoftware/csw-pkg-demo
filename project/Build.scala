@@ -10,17 +10,19 @@ object Build extends Build {
 
   lazy val container1 = project
     .settings(packageSettings: _*)
+    .settings(mainClass in Compile := Some("csw.services.pkg.ContainerCmd"))
     .settings(bashScriptExtraDefines ++= Seq("addJava -Dcsw.extjs.root="
       + file("../csw-extjs").absolutePath))
     .settings(libraryDependencies ++=
       provided(akkaActor) ++
-      compile(akkaKernel, akkaRemote, pkg, log)
+      compile(akkaRemote, pkg, log)
     )
 
   lazy val container2 = project
     .settings(packageSettings: _*)
+    .settings(mainClass in Compile := Some("csw.services.pkg.ContainerCmd"))
     .settings(libraryDependencies ++=
       provided(akkaActor) ++
-      compile(akkaKernel, akkaRemote, jeromq, pkg, log)
+      compile(akkaRemote, jeromq, pkg, log)
     )
 }

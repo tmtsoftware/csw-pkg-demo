@@ -1,7 +1,7 @@
 package csw.pkgDemo.container1
 
 import akka.actor.Props
-import csw.services.pkg.Assembly
+import csw.services.pkg.{ LifecycleHandler, Assembly }
 import csw.services.cmd.akka.{ AssemblyCommandServiceActor, OneAtATimeCommandQueueController }
 import csw.services.cmd.akka.CommandQueueActor.SubmitWithRunId
 import java.util.Date
@@ -14,21 +14,18 @@ object Assembly1 {
 }
 
 // A test assembly
-case class Assembly1(name: String)
-    extends Assembly with AssemblyCommandServiceActor with OneAtATimeCommandQueueController {
+case class Assembly1(name: String) extends Assembly
+    with AssemblyCommandServiceActor
+    with OneAtATimeCommandQueueController
+    with LifecycleHandler {
 
   // Register with the location service (which must be started as a separate process)
   registerWithLocationService(ServiceId(name, ServiceType.Assembly))
 
-  override def receive: Receive = receiveComponentMessages orElse receiveCommands
+  override def receive: Receive = receiveCommands orElse receiveLifecycleCommands orElse {
+    case x ⇒ println(s"XXX Assembly1: Received unknown message: $x")
+  }
 
-  // Define the HCDs we want to use
-  val serviceIds = List(
-    ServiceId("HCD-2A", ServiceType.HCD),
-    ServiceId("HCD-2B", ServiceType.HCD),
-    ServiceId("HCD-2C", ServiceType.HCD),
-    ServiceId("HCD-2D", ServiceType.HCD))
-  requestServices(serviceIds)
   startHttpServer()
 
   // Starts the Spray HTTP server for accessing this assembly via HTTP
@@ -56,16 +53,4 @@ case class Assembly1(name: String)
     }
     commandQueueActor ! SubmitWithRunId(confs, s.submitter, s.runId)
   }
-
-  def initialize(): Unit = { log.info("Assembly1 initialize") }
-
-  def startup(): Unit = { log.info("Assembly1 startup") }
-
-  def run(): Unit = { log.info("Assembly1 run") }
-
-  def shutdown(): Unit = { log.info("Assembly1 shutdown") }
-
-  def uninit(): Unit = { log.info("Assembly1 uninit") }
-
-  def remove(): Unit = { log.info("Assembly1 remove") }
 }

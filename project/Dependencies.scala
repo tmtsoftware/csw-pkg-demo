@@ -14,13 +14,13 @@ object Dependencies {
   def container (deps: ModuleID*): Seq[ModuleID] = deps map (_ % "container")
 
   val akkaActor      = "com.typesafe.akka"             %% "akka-actor"            % akkaVersion
-  val akkaKernel     = "com.typesafe.akka"             %% "akka-kernel"           % akkaVersion
   val akkaRemote     = "com.typesafe.akka"             %% "akka-remote"           % akkaVersion
 
   val jeromq         = "org.zeromq"                     % "jeromq"                % "0.3.3"
 
   // csw packages (installed with sbt publish-local)
   val pkg            = "org.tmt"                       %% "pkg"                     % Settings.Version
+  val containerCmd   = "org.tmt"                       %% "containerCmd"            % Settings.Version
   val log            = "org.tmt"                       %% "log"                     % Settings.Version
 
 }
