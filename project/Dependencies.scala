@@ -20,7 +20,7 @@ object Dependencies {
 
   // csw packages (installed with sbt publish-local)
   val pkg            = "org.tmt"                       %% "pkg"                     % Settings.Version
-  val containerCmd   = "org.tmt"                       %% "containerCmd"            % Settings.Version
+  val containerCmd   = "org.tmt"                       %% "containercmd"            % Settings.Version
   val log            = "org.tmt"                       %% "log"                     % Settings.Version
 
 }

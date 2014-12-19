@@ -1,11 +1,11 @@
 package csw.pkgDemo.container2
 
-import com.typesafe.config.ConfigFactory
-import csw.services.pkg.Container
+import csw.services.apps.containerCmd.ContainerCmd
 
 /**
  * Creates container2 based on resources/container2.conf
  */
 object Container2 extends App {
-  Container.create(ConfigFactory.load("container2.conf"))
+  val a = args // Required to avoid null args below
+  ContainerCmd(a, Some("container2.conf"))
 }

@@ -14,13 +14,13 @@ object Build extends Build {
     .settings(bashScriptExtraDefines ++= Seq("addJava -Dcsw.extjs.root=" + file("../csw-extjs").absolutePath))
     .settings(libraryDependencies ++=
     provided(akkaActor) ++
-      compile(akkaRemote, pkg, log)
+      compile(akkaRemote, containerCmd, log)
     )
 
   lazy val container2 = project
     .settings(packageSettings: _*)
     .settings(libraryDependencies ++=
     provided(akkaActor) ++
-      compile(akkaRemote, jeromq, pkg, log)
+      compile(akkaRemote, jeromq, containerCmd, log)
     )
 }
