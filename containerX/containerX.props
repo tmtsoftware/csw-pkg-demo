@@ -4,7 +4,7 @@
   org: org.tmt
   name: containerx
   version: 0.1-SNAPSHOT
-  class: csw.services.apps.containerCmd.ContainerCmd
+  class: csw.services.apps.containerCmd.SbtContainerLauncher
   cross-versioned: binary
 [repositories]
   local
