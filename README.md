@@ -50,6 +50,13 @@ Then start the two Akka containers (The order is not important here):
 * cd container2/target/universal/stage/bin; ./container2
 * cd container1/target/universal/stage/bin; ./container1
 
+Note: Instead of starting container2, you can do this:
+
+* cd containerX; bash containerX.sh
+
+This uses the sbt launcher and some configuration files to run the equivalent of container2.
+See [containerX](containerX/README.md) for more information.
+
 Optionally start the <a href="https://github.com/tmtsoftware/csw-play-demo">play-demo</a> web app:
 
 * cd ../play-demo; play run            # then open http://localhost:9000 in a browser
@@ -80,5 +87,3 @@ original submitter (Assembly1).
 
 The Play Framework code uses long polling (to the Spray HTTP server) to get the command status and then
 uses a websocket and Javascript code to push the status to the web page.
-
-

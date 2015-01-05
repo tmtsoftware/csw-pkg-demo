@@ -14,10 +14,12 @@ case class Hcd2(name: String, configPath: String) extends Hcd
     with OneAtATimeCommandQueueController
     with LifecycleHandler {
 
+  println("XXXXXXXXXXXX Here Here XXXXXX")
+
   val configKey = configPath.split('.').last
   override val configActor = context.actorOf(TestConfigActor.props(commandStatusActor, configKey, 3), name)
 
   override def receive: Receive = receiveCommands orElse receiveLifecycleCommands orElse {
-    case x ⇒ println(s"XXX HCD2: Received unknown message: $x from ${sender()}")
+    case x ⇒ log.error(s"XXX HCD2: Received unknown message: $x from ${sender()}")
   }
 }

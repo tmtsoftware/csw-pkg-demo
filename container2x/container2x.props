@@ -2,7 +2,7 @@
   version: 2.11.4
 [app]
   org: org.tmt
-  name: containerx
+  name: container2x
   version: 0.1-SNAPSHOT
   class: csw.services.apps.containerCmd.SbtContainerLauncher
   cross-versioned: binary

@@ -8,11 +8,11 @@ lazy val settings = Seq(
 
 val containerCmd = "org.tmt" %% "containercmd" % Version
 val cmd = "org.tmt" %% "cmd" % Version
-val container2 = "org.tmt" %% "container2" % Version
+val container1 = "org.tmt" %% "container1" % Version
 
 lazy val root = (project in file(".")).
   settings(settings: _*).
   settings(
-    name := "containerx",
-    libraryDependencies ++= Seq(containerCmd, cmd, container2)
+    name := "container1x",
+    libraryDependencies ++= Seq(containerCmd, cmd, container1)
   )
