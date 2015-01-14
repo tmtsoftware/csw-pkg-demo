@@ -1,0 +1,19 @@
+
+
+val Version = "0.1-SNAPSHOT"
+
+lazy val settings = Seq(
+  organization := "org.tmt",
+  version := Version,
+  scalaVersion := "2.11.4"
+)
+lazy val packageSettings = settings ++ packagerSettings ++ packageArchetype.java_application
+
+val jeromq = "org.zeromq" % "jeromq" % "0.3.3"
+val pkg = "org.tmt" %% "pkg" % Version
+
+lazy val hcd2 = (project in file("."))
+  .settings(packageSettings: _*)
+  .settings(
+    libraryDependencies ++= Seq(pkg, jeromq)
+  )
