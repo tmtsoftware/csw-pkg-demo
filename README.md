@@ -42,11 +42,18 @@ Note: See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for h
 based web UI used below. You need to install and run some "sencha" commands once to prepare the web app, otherwise
 the generated CSS file will not be found and the web app will not display properly.
 
+Run the demo
+------------
+
 To run the demo, there are a number of alternative scripts provided (installed under ../install/bin):
 
 * test_containers.sh - runs the hardware simulation code, the location service and the two containers
 
 * test_components.sh - does the same as above, but runs the assembly and HCDs in standalone mode, without a container
+
+* test_dynamic_containers.sh - does the same as above, but creates the containers on the fly using a
+  [scalas](http://www.scala-sbt.org/0.13/docs/Scripts.html)
+  script and config files for the containers
 
 Test with the web app
 ---------------------
