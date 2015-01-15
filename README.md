@@ -15,13 +15,34 @@ The Akka ZeroMQ support currently requires ZeroMQ version 2.2.
 The Scala code picks up the shared library automatically if it is installed in /usr/lib or /usr/local/lib.
 The required library name on the Mac is libzmq.1.dylib.
 
+Subprojects
+----------
+
+* assembly1 - an example assembly
+* hcd2 - an example HCD
+* container1 - an example container for assembly1
+* container2 - an example container for a number of instances of hcd2
+
+Note that assembly1 and hcd2 are both _components_ and can also be run standalone using generated scripts.
+
+A container can include multiple components. The container1 example wraps the assembly1 component while the
+container2 demo wraps multiple hcd2 instances.
+
+The scripts directory also contains the scripts container1s and container2s to demonstrate how to
+dynamically configure and run containers.
+
 Sbt Build
 ---------
 
-To compile the Scala/Akka code, type "sbt" and then:
+For demonstration purposes, each project here has its own build.sbt.
+
+To compile, in each subproject, type "sbt" and then:
 
 * compile
+* publish-local
 * stage
+
+Or alternatively, run ./install.sh to create an install directory (../install) containing all the necessary scripts and jar files.
 
 The stage task creates the distribution with the scripts for the applications
 (found under the target/universal/stage/bin directories).

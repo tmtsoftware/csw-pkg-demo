@@ -1,0 +1,21 @@
+#!/usr/bin/env scalas
+# Example of how you can use a scalas script (see http://www.scala-sbt.org/release/docs/Scripts.html)
+# to start a container including the necessary dependencies.
+# 
+# Usage: container1s container1.conf
+#
+# Where container1.conf configures the container (see csw-pkg-demo/container1/src/main/resources/container1.conf)
+!#
+
+/***
+scalaVersion := "2.11.4"
+
+libraryDependencies ++= Seq(
+    "org.tmt" %% "containercmd" % "0.1-SNAPSHOT",
+    "org.tmt" %% "assembly1" % "0.1-SNAPSHOT"
+)
+
+*/
+ 
+csw.services.apps.containerCmd.ContainerCmd(args)
+
