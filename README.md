@@ -36,60 +36,27 @@ Sbt Build
 
 For demonstration purposes, each project here has its own build.sbt.
 
-To compile, in each subproject, type "sbt" and then:
-
-* compile
-* publish-local
-* stage
-
-Or alternatively, run ./install.sh to create an install directory (../install) containing all the necessary scripts and jar files.
-
-The stage task creates the distribution with the scripts for the applications
-(found under the target/universal/stage/bin directories).
+To compile, run ./install.sh to create an install directory (../install) containing all the necessary scripts and jar files.
 
 Note: See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for how to setup the ExtJS
 based web UI used below. You need to install and run some "sencha" commands once to prepare the web app, otherwise
 the generated CSS file will not be found and the web app will not display properly.
 
-To run the demo: Open terminal windows or tabs in these directories and run these commands:
+To run the demo, there are a number of alternative scripts provided (installed under ../install/bin):
 
-* cd hardware/src/main/c; mtserver2 filter
-* cd hardware/src/main/c; mtserver2 disperser
+* test_containers.sh - runs the hardware simulation code, the location service and the two containers
 
-Optionally, if you want to test with the 
-<a href="https://github.com/tmtsoftware/csw-play-demo">play-demo</a> web app:
+* test_components.sh - does the same as above, but runs the assembly and HCDs in standalone mode, without a container
 
-* cd hardware/src/main/c; mtserver2 pos    # last part of config path for base pos and ao pos
-* cd hardware/src/main/c; mtserver2 one
-
-Start the location service (This has to be running before any HCDs or assemblies are started):
-
-* cd ../csw/loc/target/universal/stage/bin; ./loc
-
-Then start the two Akka containers (The order is not important here):
-
-* cd container2/target/universal/stage/bin; ./container2
-* cd container1/target/universal/stage/bin; ./container1
-
-Note: Instead of starting container2, you can do this:
-
-* cd containerX; bash containerX.sh
-
-This uses the sbt launcher and some configuration files to run the equivalent of container2.
-See [containerX](containerX/README.md) for more information.
-
-Optionally start the <a href="https://github.com/tmtsoftware/csw-play-demo">play-demo</a> web app:
-
-* cd ../play-demo; play run            # then open http://localhost:9000 in a browser
-
-Or: Access the Spray/ExtJS based web app:
+Test with the web app
+---------------------
 
 * open http://localhost:8089 in a browser for the Ext JS version and select the development
 (JavaScript source) or production (compiled, minified) version. Note that you need to
 compile the ExtJS code at least once to get the required CSS file generated.
 See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for instructions.
 
-Enter the values in the form and press Submit. The status of the command is shown below the button and updated
+Select values in the form and press Submit. The status of the command is shown below the button and updated
 while the command is running.
 
 TODO: Add the ability to pause and restart the queue, pause, cancel or abort a command, etc.
@@ -99,12 +66,9 @@ The following diagram shows the relationships of the various containers, assembl
 ![PkgTest diagram](doc/PkgTest.jpg)
 
 When the user fills out the web form and presses Submit, a JSON config is sent to the Spray/REST HTTP server
-of the Assembly1 command service. It forwards different parts of the config to HCD1 and HCD2, which are in
+of the Assembly1 command service. It forwards different parts of the config to different HCDs, which run in
 a different container and JVM, but are registered as components with Assembly1, so that it forwards parts of
-configs that match the keys they registered with.
+configs that match the paths they are registered with.
 
-HCD1 and HCD2 both talk to the C/ZeroMQ based hardware simulation code and then return a command status to the
+The HCDs both talk to the C/ZeroMQ based hardware simulation code and then return a command status to the
 original submitter (Assembly1).
-
-The Play Framework code uses long polling (to the Spray HTTP server) to get the command status and then
-uses a websocket and Javascript code to push the status to the web page.
