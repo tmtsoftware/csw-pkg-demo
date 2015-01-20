@@ -23,7 +23,8 @@ Subprojects
 * container1 - an example container for assembly1
 * container2 - an example container for a number of instances of hcd2
 
-Note that assembly1 and hcd2 are both _components_ and can also be run standalone using generated scripts.
+Note that assembly1 and hcd2 are both _components_ and can also be run standalone using generated scripts
+(under target/universal/stage/bin).
 
 A container can include multiple components. The container1 example wraps the assembly1 component while the
 container2 demo wraps multiple hcd2 instances.
@@ -54,6 +55,9 @@ To run the demo, there are a number of alternative scripts provided (installed u
 * test_dynamic_containers.sh - does the same as above, but creates the containers on the fly using a
   [scalas](http://www.scala-sbt.org/0.13/docs/Scripts.html)
   script and config files for the containers
+
+* test_containers_with_config_service.sh - does the same as above, but in this case the containers get the
+  configurations from the config service, which is started in the script
 
 Test with the web app
 ---------------------
