@@ -6,6 +6,9 @@ exec scala "$0" "$@"
 // This script should be run from this dir (csw/install/bin).
 // (Note: "ls".run runs ls in the background, while "ls".! runs ls and waits. )
 
+// Note that the 1.0-M2 version of akka-http and akka-streams produces a lot of error log messages
+// that can be ignored. These should go away in a future version.
+
 import scala.sys.process._
 
 // Start the ZMQ based hardware simulation
@@ -25,8 +28,8 @@ import scala.sys.process._
 "cs -delete -init".run 
 
 // Create the two container config files in the config service (TODO: add -config option)
-"csclient create test/container1.conf ../../csw-pkg-demo/container1/src/main/resources/container1.conf".!
-"csclient create test/container2.conf ../../csw-pkg-demo/container2/src/main/resources/container2.conf".!
+"csclient create test/container1.conf -i ../../csw-pkg-demo/container1/src/main/resources/container1.conf".!
+"csclient create test/container2.conf -i ../../csw-pkg-demo/container2/src/main/resources/container2.conf".!
 
 // Since the files are not found locally, they will be fetched from the config service
 "container1s test/container1.conf".run

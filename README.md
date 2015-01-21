@@ -59,6 +59,9 @@ To run the demo, there are a number of alternative scripts provided (installed u
 * test_containers_with_config_service.sh - does the same as above, but in this case the containers get the
   configurations from the config service, which is started in the script
 
+Note that the 1.0-M2 version of akka-http and akka-streams produces a lot of error log messages
+that can be ignored. These should go away in a future version.
+
 Test with the web app
 ---------------------
 
