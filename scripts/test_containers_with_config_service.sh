@@ -21,11 +21,12 @@ import scala.sys.process._
 "configserviceannex".run
 
 // Start the config service, creating temporary main and local repositories (TODO: add -config option)
+// (The -delete and -init options tell it to delete and create the local and main Git repos, so we start with a clean repo)
 "cs -delete -init".run 
 
 // Create the two container config files in the config service (TODO: add -config option)
-"csClient create test/container1.conf ../../csw-pkg-demo/container1/src/main/resources/container1.conf".!
-"csClient create test/container2.conf ../../csw-pkg-demo/container2/src/main/resources/container2.conf".!
+"csclient create test/container1.conf ../../csw-pkg-demo/container1/src/main/resources/container1.conf".!
+"csclient create test/container2.conf ../../csw-pkg-demo/container2/src/main/resources/container2.conf".!
 
 // Since the files are not found locally, they will be fetched from the config service
 "container1s test/container1.conf".run
