@@ -3,7 +3,7 @@ val Version = "0.1-SNAPSHOT"
 lazy val settings = Seq(
   organization := "org.tmt",
   version := Version,
-  scalaVersion := "2.11.4"
+  scalaVersion := "2.11.5"
 )
 lazy val packageSettings = settings ++ packagerSettings ++ packageArchetype.java_application
 
