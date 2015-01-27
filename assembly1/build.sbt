@@ -9,11 +9,11 @@ lazy val settings = Seq(
 )
 lazy val packageSettings = settings ++ packagerSettings ++ packageArchetype.java_application
 
-val hcd2 = "org.tmt" %% "hcd2" % Version
+lazy val pkg = "org.tmt" %% "pkg" % Version
 
 lazy val assembly1 = (project in file("."))
   .settings(packageSettings: _*)
   .settings(bashScriptExtraDefines ++= Seq("addJava -Dcsw.extjs.root=" + file("../../csw-extjs").absolutePath))
   .settings(
-    libraryDependencies ++= Seq(hcd2)
+    libraryDependencies ++= Seq(pkg)
   )
