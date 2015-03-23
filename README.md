@@ -35,8 +35,6 @@ dynamically configure and run containers.
 Sbt Build
 ---------
 
-For demonstration purposes, each project here has its own build.sbt.
-
 To compile, run ./install.sh to create an install directory (../install) containing all the necessary scripts and jar files.
 
 Note: See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for how to setup the ExtJS
