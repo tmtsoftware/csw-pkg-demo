@@ -20,6 +20,5 @@ object Assembly1App extends App {
     ServiceId("HCD-2B", ServiceType.HCD),
     ServiceId("HCD-2C", ServiceType.HCD),
     ServiceId("HCD-2D", ServiceType.HCD))
-  val info = Component.create(props, regInfo, services)
-  info.lifecycleManager ! Startup
+  Component.create(props, regInfo, services)
 }
