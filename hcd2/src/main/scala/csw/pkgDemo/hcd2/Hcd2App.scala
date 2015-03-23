@@ -1,7 +1,7 @@
 package csw.pkgDemo.hcd2
 
 import csw.services.ls.LocationService.RegInfo
-import csw.services.ls.LocationServiceActor.{ServiceId, ServiceType}
+import csw.services.ls.LocationServiceActor.{ ServiceId, ServiceType }
 import csw.services.pkg.Component
 import csw.services.pkg.LifecycleManager.Startup
 

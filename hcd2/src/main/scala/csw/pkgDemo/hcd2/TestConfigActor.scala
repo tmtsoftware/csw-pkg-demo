@@ -6,13 +6,13 @@ import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
 import csw.services.cmd.akka.CommandQueueActor.SubmitWithRunId
 import csw.services.cmd.akka.ConfigActor._
-import csw.services.cmd.akka.{CommandStatus, ConfigActor, RunId}
+import csw.services.cmd.akka.{ CommandStatus, ConfigActor, RunId }
 import csw.util.cfg.Configurations._
 import org.zeromq.ZMQ
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 object TestConfigActor {
   def props(commandStatusActor: ActorRef, configKey: String, numberOfSecondsToRun: Int = 2): Props =

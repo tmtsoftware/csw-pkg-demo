@@ -1,7 +1,7 @@
 package csw.pkgDemo.assembly1
 
 import csw.services.ls.LocationService.RegInfo
-import csw.services.ls.LocationServiceActor.{ServiceType, ServiceId}
+import csw.services.ls.LocationServiceActor.{ ServiceType, ServiceId }
 import csw.services.pkg.Component
 import csw.services.pkg.LifecycleManager.Startup
 
@@ -19,8 +19,7 @@ object Assembly1App extends App {
     ServiceId("HCD-2A", ServiceType.HCD),
     ServiceId("HCD-2B", ServiceType.HCD),
     ServiceId("HCD-2C", ServiceType.HCD),
-    ServiceId("HCD-2D", ServiceType.HCD)
-  )
+    ServiceId("HCD-2D", ServiceType.HCD))
   val info = Component.create(props, regInfo, services)
   info.lifecycleManager ! Startup
 }
