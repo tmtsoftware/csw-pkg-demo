@@ -7,7 +7,7 @@ import sbt.Keys._
 import sbt._
 
 val Version = "0.1-SNAPSHOT"
-val ScalaVersion = "2.11.5"
+val ScalaVersion = "2.11.6"
 val extjsPath = file("../csw-extjs").absolutePath
 
 def formattingPreferences: FormattingPreferences =
