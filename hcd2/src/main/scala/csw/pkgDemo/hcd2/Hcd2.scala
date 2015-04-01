@@ -2,6 +2,7 @@ package csw.pkgDemo.hcd2
 
 import akka.actor.Props
 import csw.services.cmd.akka.{ CommandServiceActor, OneAtATimeCommandQueueController }
+import csw.services.pkg.LifecycleManager.{ Running, StartupFailed }
 import csw.services.pkg.{ LifecycleHandler, Hcd }
 
 // A test HCD that is configured with the given name and config path
@@ -20,4 +21,10 @@ case class Hcd2(name: String, configPath: String) extends Hcd
   override def receive: Receive = receiveCommands orElse receiveLifecycleCommands orElse {
     case x ⇒ log.error(s"Received unknown message: $x from ${sender()}")
   }
+
+  //  // XXX test
+  //  override def startup(): Either[StartupFailed, Running] = {
+  //    log.info(s"startup $name")
+  //    Left(StartupFailed(name, "XXX Just testing"))
+  //  }
 }
