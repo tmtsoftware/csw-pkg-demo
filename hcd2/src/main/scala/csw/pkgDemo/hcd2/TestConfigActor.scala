@@ -6,7 +6,8 @@ import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
 import csw.services.cmd.akka.CommandQueueActor.SubmitWithRunId
 import csw.services.cmd.akka.ConfigActor._
-import csw.services.cmd.akka.{ CommandStatus, ConfigActor, RunId }
+import csw.services.cmd.akka.ConfigActor
+import csw.shared.{ RunId, CommandStatus }
 import csw.util.cfg.Configurations._
 import org.zeromq.ZMQ
 
