@@ -145,7 +145,9 @@ class TestConfigActor(override val commandStatusActor: ActorRef, configKey: Stri
         } else config
     }
 
-    sender() ! ConfigResponse(Success(confs))
+    log.debug(s"query: sending response to $replyTo: $confs")
+
+    replyTo ! ConfigResponse(Success(confs))
   }
 }
 
