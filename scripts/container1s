@@ -4,8 +4,8 @@
 scalaVersion := "2.11.7"
 
 libraryDependencies ++= Seq(
-    "org.tmt" %% "containercmd" % "0.1-SNAPSHOT",
-    "org.tmt" %% "assembly1" % "0.1-SNAPSHOT"
+    "org.tmt" %% "containercmd" % "0.2-SNAPSHOT",
+    "org.tmt" %% "assembly1" % "0.2-SNAPSHOT"
 )
 */
 

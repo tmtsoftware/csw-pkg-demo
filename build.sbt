@@ -6,7 +6,7 @@ import com.typesafe.sbt.packager.Keys._
 import sbt.Keys._
 import sbt._
 
-val Version = "0.1-SNAPSHOT"
+val Version = "0.2-SNAPSHOT"
 val ScalaVersion = "2.11.7"
 
 def formattingPreferences: FormattingPreferences =

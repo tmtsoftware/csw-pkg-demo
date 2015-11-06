@@ -1,4 +1,4 @@
-val Version = "0.1-SNAPSHOT"
+val Version = "0.2-SNAPSHOT"
 
 lazy val settings = Seq(
   organization := "org.tmt",
