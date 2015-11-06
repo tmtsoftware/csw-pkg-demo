@@ -6,19 +6,11 @@ exec scala "$0" "$@"
 // This script should be run from this dir (csw/install/bin).
 // (Note: "ls".run runs ls in the background, while "ls".! runs ls and waits. )
 
-// Note that the 1.0-M2 version of akka-http and akka-streams produces a lot of error log messages
-// that can be ignored. These should go away in a future version.
-
 import scala.sys.process._
 
 // Start the ZMQ based hardware simulation
 "mtserver2 filter".run
 "mtserver2 disperser".run
-"mtserver2 pos".run
-"mtserver2 one".run
-
-// Start the location service
-"loc".run
 
 // Start the config service annex, which stores large/binary files
 "configserviceannex".run

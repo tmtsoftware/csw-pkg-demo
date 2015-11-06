@@ -1,4 +1,4 @@
-package csw.pkgDemo.hcd2
+package csw.pkgDemo.container2
 
 import csw.services.apps.containerCmd.ContainerCmd
 

@@ -1,4 +1,4 @@
-package csw.pkgDemo.assembly1
+package csw.pkgDemo.container1
 
 import csw.services.apps.containerCmd.ContainerCmd
 

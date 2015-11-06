@@ -63,7 +63,7 @@ int main (int argc, char** argv)
 	exit(1);
     }
     // Use a different port depending on the argument (filter, disperser, pos, one)
-    // Make sure this matches the values in resources/TestConfigActor.conf.
+    // Make sure this matches the values in resources/zmq.conf.
     // Later on, this should be read from a config file or service.
     char* url = "tcp://*:6565";
     if (strcmp(argv[1], "filter") == 0) {

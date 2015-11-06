@@ -8,7 +8,6 @@ import sbt._
 
 val Version = "0.1-SNAPSHOT"
 val ScalaVersion = "2.11.7"
-val extjsPath = file("../csw-extjs").absolutePath
 
 def formattingPreferences: FormattingPreferences =
   FormattingPreferences()
@@ -52,7 +51,7 @@ def packageSettings(summary: String, desc: String) = defaultSettings ++
   rpmGroup := Some("CSW"),
   packageSummary := summary,
   packageDescription := desc,
-  bashScriptExtraDefines ++= Seq(s"addJava -DCSW_VERSION=$Version -Dcsw.extjs.root=$extjsPath -Dakka.loglevel=DEBUG")
+  bashScriptExtraDefines ++= Seq(s"addJava -DCSW_VERSION=$Version -Dakka.loglevel=DEBUG")
 )
 
 def compile(deps: ModuleID*): Seq[ModuleID] = deps map (_ % "compile")
