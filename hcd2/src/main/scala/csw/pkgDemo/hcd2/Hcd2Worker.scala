@@ -50,7 +50,6 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
     // and extract the value here
     val key = if (zmqKey == "filter") StandardKeys.filter else StandardKeys.disperser
     setupConfig.get(key).foreach { value ⇒
-      // For this test, a timestamp value is inserted by assembly1 (Later the JSON can be just passed on to ZMQ)
       val zmqMsg = ByteString(s"$zmqKey=$value", ZMQ.CHARSET.name())
 
       ask(zmqClient, ZmqClient.Command(zmqMsg))(6 seconds) onComplete {
