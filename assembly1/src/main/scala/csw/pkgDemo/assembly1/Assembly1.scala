@@ -23,6 +23,9 @@ object Assembly1 {
 case class Assembly1(name: String, config: Config)
     extends Assembly with AssemblyController with LifecycleHandler {
 
+  // Actor waiting for current state variable to match demand state
+  private var stateMatcherActor: Option[ActorRef] = None
+
   /**
    * Validates a received config arg
    */
@@ -52,10 +55,7 @@ case class Assembly1(name: String, config: Config)
         actorRef ! HcdController.Submit(config)
         DemandState(config)
       }
-      replyTo.foreach { actorRef ⇒
-        // Wait for the demand states to match the current states, then reply to the sender with the command status
-        context.actorOf(StateMatcherActor.props(demandStates.toList, actorRef, configArg.info.runId))
-      }
+      matchDemandStates(demandStates, replyTo, configArg.info.runId)
     }
     valid
   }
