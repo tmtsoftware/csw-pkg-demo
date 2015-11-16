@@ -5,6 +5,14 @@ This project contains standalone applications for testing the command service,
 Container, Assembly and HCD components and is based on
 the document "OSW TN009 - TMT CSW PACKAGING SOFTWARE DESIGN DOCUMENT".
 
+Dependencies
+------------
+
+This project depends on the csw project, so you should run install.sh there in order to
+install the necessary jars.
+
+To use the web app, you need to run install.sh in csw-play-demo as well.
+
 ZeroMQ Native Lib Dependency
 ----------------------------
 
@@ -37,10 +45,6 @@ Sbt Build
 
 To compile, run ./install.sh to create an install directory (../install) containing all the necessary scripts and jar files.
 
-Note: See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for how to setup the ExtJS
-based web UI used below. You need to install and run some "sencha" commands once to prepare the web app, otherwise
-the generated CSS file will not be found and the web app will not display properly.
-
 Run the demo
 ------------
 
@@ -57,30 +61,25 @@ To run the demo, there are a number of alternative scripts provided (installed u
 * test_containers_with_config_service.sh - does the same as above, but in this case the containers get the
   configurations from the config service, which is started in the script
 
-Note that the 1.0-M2 version of akka-http and akka-streams produces a lot of error log messages
-that can be ignored. These should go away in a future version.
-
 Test with the web app
 ---------------------
 
-* open http://localhost:8089 in a browser for the Ext JS version and select the development
-(JavaScript source) or production (compiled, minified) version. Note that you need to
-compile the ExtJS code at least once to get the required CSS file generated.
-See <a href="https://github.com/tmtsoftware/csw-extjs">csw-extjs</a> for instructions.
+To use the web app, first make sure you have installed it by running install.sh in 
+the csw-play-demo project. Then run:
 
-Select values in the form and press Submit. The status of the command is shown below the button and updated
+    demowebserver
+
+Open http://localhost:9000 in a browser for the web interface.
+
+Select filter and disperser values in the form and press Apply. 
+The status of the command is shown below the button and updated
 while the command is running.
 
-TODO: Add the ability to pause and restart the queue, pause, cancel or abort a command, etc.
+The list of numbers below each item displays the telemetry that the app receives from
+the server and indicates that the filter or disperser wheel is moving past 
+the different positions.
 
-The following diagram shows the relationships of the various containers, assemblies and HCDs in this demo:
-
-![PkgTest diagram](doc/PkgTest.jpg)
-
-When the user fills out the web form and presses Submit, a JSON config is sent to the Spray/REST HTTP server
-of the Assembly1 command service. It forwards different parts of the config to different HCDs, which run in
-a different container and JVM, but are registered as components with Assembly1, so that it forwards parts of
-configs that match the paths they are registered with.
-
-The HCDs both talk to the C/ZeroMQ based hardware simulation code and then return a command status to the
-original submitter (Assembly1).
+The HCDs both talk to the C/ZeroMQ based hardware simulation code and then set state
+variables to indicate the current state of the hardware. The assembly monitors these
+variables to determine when the config has been matched, so it can send the command
+status back to the requester (the web app in this case).
