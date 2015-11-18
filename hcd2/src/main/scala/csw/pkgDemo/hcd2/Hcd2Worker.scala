@@ -54,10 +54,11 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
     log.info("Sending message to ZMQ hardware simulation")
 
     svs.get(prefix).onComplete {
-      case Success(currentStateOpt) => currentStateOpt match {
-        case Some(currentState) => currentState.get(key).foreach(sendToZmq(_, setupConfig))
+      case Success(currentStateOpt) ⇒ currentStateOpt match {
+        case Some(currentState) ⇒ currentState.get(key).foreach(sendToZmq(_, setupConfig))
+        case None               ⇒ sendToZmq(choices(0), setupConfig)
       }
-      case Failure(ex) => sendToZmq(choices(0), setupConfig)
+      case Failure(ex) ⇒ sendToZmq(choices(0), setupConfig)
     }
   }
 
@@ -65,7 +66,7 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
     setupConfig.get(key).foreach { value ⇒
       // XXX TODO: Send a number to the ZMQ process, which is the number of filters
       // or dispersers between the current one and the new one, moving to the right and wrapping around
-//      choices.indexOf(value), choices.indexOf(currentValue)   ...
+      //      choices.indexOf(value), choices.indexOf(currentValue)   ...
 
       val zmqMsg = ByteString(s"$zmqKey=$value", ZMQ.CHARSET.name())
 
