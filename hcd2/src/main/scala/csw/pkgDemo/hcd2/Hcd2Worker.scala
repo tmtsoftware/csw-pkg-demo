@@ -18,6 +18,9 @@ object Hcd2Worker {
   def props(prefix: String): Props = Props(classOf[Hcd2Worker], prefix)
 
   val settings = ConfigFactory.load("zmq")
+
+  val FILTERS = Array[String]("None", "g_G0301", "r_G0303", "i_G0302", "z_G0304", "Z_G0322", "Y_G0323", "u_G0308")
+  val DISPERSERS = Array[String]("Mirror", "B1200_G5301", "R831_G5302", "B600_G5303", "B600_G5307", "R600_G5304", "R400_G5305", "R150_G5306")
 }
 
 /**
@@ -27,6 +30,11 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
   import Hcd2Worker._
   import context.dispatcher
   val zmqKey = prefix.split('.').last
+
+  val (key, choices) = if (zmqKey == "filter")
+    (StandardKeys.filter, FILTERS)
+  else (StandardKeys.disperser, DISPERSERS)
+
   val url = settings.getString(s"zmq.$zmqKey.url")
   log.info(s"For $zmqKey: using ZMQ URL = $url")
 
@@ -41,15 +49,24 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
 
   /**
    * Called when a configuration is submitted
-   * (XXX Fix this so the ZMQ C code saves the value)
    */
   def submit(setupConfig: SetupConfig): Unit = {
     log.info("Sending message to ZMQ hardware simulation")
 
-    // Note: We could just send the JSON and let the C code parse it, but for now, keep it simple
-    // and extract the value here
-    val key = if (zmqKey == "filter") StandardKeys.filter else StandardKeys.disperser
+    svs.get(prefix).onComplete {
+      case Success(currentStateOpt) => currentStateOpt match {
+        case Some(currentState) => currentState.get(key).foreach(sendToZmq(_, setupConfig))
+      }
+      case Failure(ex) => sendToZmq(choices(0), setupConfig)
+    }
+  }
+
+  def sendToZmq(currentValue: String, setupConfig: SetupConfig): Unit = {
     setupConfig.get(key).foreach { value ⇒
+      // XXX TODO: Send a number to the ZMQ process, which is the number of filters
+      // or dispersers between the current one and the new one, moving to the right and wrapping around
+//      choices.indexOf(value), choices.indexOf(currentValue)   ...
+
       val zmqMsg = ByteString(s"$zmqKey=$value", ZMQ.CHARSET.name())
 
       ask(zmqClient, ZmqClient.Command(zmqMsg))(6 seconds) onComplete {

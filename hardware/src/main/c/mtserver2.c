@@ -62,7 +62,7 @@ int main (int argc, char** argv)
 	printf("Expected one argument: filter or disperser\n");
 	exit(1);
     }
-    // Use a different port depending on the argument (filter, disperser, pos, one)
+    // Use a different port depending on the argument (filter, disperser)
     // Make sure this matches the values in resources/zmq.conf.
     // Later on, this should be read from a config file or service.
     char* url = "tcp://*:6565";
@@ -70,10 +70,6 @@ int main (int argc, char** argv)
         url = "tcp://*:6565";
     } else if (strcmp(argv[1], "disperser") == 0) {
         url = "tcp://*:6566";
-    } else if (strcmp(argv[1], "pos") == 0) {
-        url = "tcp://*:6567";
-    } else if (strcmp(argv[1], "one") == 0) {
-        url = "tcp://*:6568";
     }
     printf("Listening for %s commands on %s\n", argv[1], url);
 
