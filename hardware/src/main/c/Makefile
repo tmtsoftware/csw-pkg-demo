@@ -2,7 +2,7 @@ USR_DIR    =/usr/local
 INCS_DIRS  =-I${USR_DIR}/include
 LIBS_DIRS  =-L${USR_DIR}/lib 
 #CPP_DEFS   =-D=HAVE_CONFIG_H
-CPP_OPTS   =-Wall -O2
+CPP_OPTS   =-O2
 #LIBS       =-lczmq -lzmq
 LIBS       =-lzmq.1
 

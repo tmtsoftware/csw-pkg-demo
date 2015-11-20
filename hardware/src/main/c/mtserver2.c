@@ -1,16 +1,14 @@
-//
-//  Multithreaded server (based on zeromq-2.2 example)
-//
+// This simple application represents something like a filter or disperser wheel with a given number of positions.
+// You can send a message to increment the current position (with wrap-around) and you receive a reply with
+// the current position index.
+
 #include "zhelpers2.h"
 #include <pthread.h>
 #include <signal.h>
 
-//  ---------------------------------------------------------------------
-//  Signal handling
-//
-//  Call s_catch_signals() in your application at startup, and then exit
-//  your main loop if s_interrupted is ever 1. Works especially well with
-//  zmq_poll.
+static char* name;
+static int numPositions = 8; // Should match the number of filters or dispersers...
+static int currentPos = 0;
 
 static int s_interrupted = 0;
 static void s_signal_handler (int signal_value)
@@ -35,20 +33,21 @@ worker_routine (void *context) {
     zmq_connect (receiver, "inproc://workers");
 
     while (!s_interrupted) {
-        char *string = s_recv (receiver);
-        if (string) {
-            printf ("Received request: [%s]\n", string);
-            //  Do some 'work'
-            free (string);
-	        srandomdev();
-            int ms = 1000 * (randof(5000) + 1);
-            printf ("This will take %g secs\n", ms/1000000.);
-            usleep (ms);
-            printf ("Done: Sending OK reply back to sender\n");
+        char *inputStr = s_recv (receiver);
+        if (inputStr) {
+            //  Simulate the filter or disperser wheel rotating and send back the current position until we reach the target
+            printf ("%s: Received request: [%s]\n", name, inputStr);
+            int value = atoi(inputStr);
+            free (inputStr);
+            currentPos = (currentPos + value) % numPositions;
+            usleep(500000);
             //  Send reply back to client
-            s_send (receiver, "OK");
+            printf("%s: Sending current position: [%d]\n", name, currentPos);
+            char msg[16];
+            sprintf(msg, "%d", currentPos);
+            s_send(receiver, msg);
         } else {
-             break;
+            break;
         }
     }
     if (s_interrupted) printf("Interrupted\n");

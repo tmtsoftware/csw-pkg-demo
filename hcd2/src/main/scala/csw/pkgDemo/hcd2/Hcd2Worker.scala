@@ -1,18 +1,16 @@
 package csw.pkgDemo.hcd2
 
 import akka.actor._
-import akka.pattern.ask
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
-import csw.services.kvs.{ StateVariableStore, KvsSettings }
+import csw.services.kvs.{ TelemetryService, StateVariableStore, KvsSettings }
 import csw.util.cfg.Configurations.StateVariable.CurrentState
 import csw.util.cfg.Configurations._
+import csw.util.cfg.Events.StatusEvent
 import csw.util.cfg.StandardKeys
 import org.zeromq.ZMQ
 
-import scala.concurrent.duration._
 import scala.language.postfixOps
-import scala.util.{ Failure, Success }
 
 object Hcd2Worker {
   def props(prefix: String): Props = Props(classOf[Hcd2Worker], prefix)
@@ -27,8 +25,10 @@ object Hcd2Worker {
  * An actor that does the work of matching a configuration
  */
 class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
+
   import Hcd2Worker._
   import context.dispatcher
+
   val zmqKey = prefix.split('.').last
 
   val (key, choices) = if (zmqKey == "filter")
@@ -37,55 +37,49 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
 
   val url = settings.getString(s"zmq.$zmqKey.url")
   log.info(s"For $zmqKey: using ZMQ URL = $url")
-
   val zmqClient = context.actorOf(ZmqClient.props(url))
 
   val svs = StateVariableStore(KvsSettings(context.system))
+  val telemetryService = TelemetryService(KvsSettings(context.system))
 
-  override def receive: Receive = {
-    case s: SetupConfig ⇒ submit(s)
-    case x              ⇒ log.error(s"Unexpected message $x")
-  }
+  // for the demo just assume positions start at 0, 0
+  context.become(working(0, 0))
+
+  override def receive: Receive = Actor.emptyBehavior
 
   /**
-   * Called when a configuration is submitted
+   * Actor state while talking to the ZMQ process
+   * @param currentPos The current position (index in filter or disperser array)
+   * @param demandPos The demand (requested) position (index in filter or disperser array)
    */
-  def submit(setupConfig: SetupConfig): Unit = {
-    log.info("Sending message to ZMQ hardware simulation")
-
-    svs.get(prefix).onComplete {
-      case Success(currentStateOpt) ⇒ currentStateOpt match {
-        case Some(currentState) ⇒ currentState.get(key).foreach(sendToZmq(_, setupConfig))
-        case None               ⇒ sendToZmq(choices(0), setupConfig)
+  def working(currentPos: Int, demandPos: Int): Receive = {
+    case setupConfig: SetupConfig ⇒
+      setupConfig.get(key).foreach { value ⇒
+        val pos = choices.indexOf(value)
+        setPos(currentPos, pos)
       }
-      case Failure(ex) ⇒ sendToZmq(choices(0), setupConfig)
+
+    // The reply from ZMQ should be the index of the current filter or disperser
+    case reply: ByteString ⇒
+      val pos = reply.decodeString(ZMQ.CHARSET.name()).toInt
+      log.info(s"ZMQ current pos: $pos")
+      val value = choices(pos)
+      svs.set(CurrentState(prefix).set(key, value))
+      telemetryService.set(StatusEvent(prefix).set(key, value))
+      setPos(pos, demandPos)
+
+    case x ⇒ log.error(s"Unexpected message $x")
+  }
+
+  // If the demand pos is not equal to the current pos, increment the position
+  // (to simulate the filter or disperser wheel turning one position at a time
+  // while updating the telemetry)
+  private def setPos(currentPos: Int, demandPos: Int): Unit = {
+    context.become(working(currentPos, demandPos))
+    if (demandPos != currentPos) {
+      zmqClient ! ZmqClient.Move
     }
   }
 
-  def sendToZmq(currentValue: String, setupConfig: SetupConfig): Unit = {
-    setupConfig.get(key).foreach { value ⇒
-      // XXX TODO: Send a number to the ZMQ process, which is the number of filters
-      // or dispersers between the current one and the new one, moving to the right and wrapping around
-      //      choices.indexOf(value), choices.indexOf(currentValue)   ...
-
-      val zmqMsg = ByteString(s"$zmqKey=$value", ZMQ.CHARSET.name())
-
-      ask(zmqClient, ZmqClient.Command(zmqMsg))(6 seconds) onComplete {
-        case Success(reply: ByteString) ⇒
-          val msg = reply.decodeString(ZMQ.CHARSET.name())
-          log.info(s"ZMQ Message: $msg")
-          // For this test, assume setupConfig is the current state of the device...
-          svs.set(CurrentState(setupConfig))
-
-        case Success(m) ⇒ // should not happen
-          log.error(s"Unexpected reply from zmq: $m")
-
-        case Failure(ex) ⇒
-          log.error("Error talking to zmq", ex)
-      }
-
-    }
-
-  }
 }
 
