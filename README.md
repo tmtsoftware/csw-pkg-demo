@@ -13,6 +13,9 @@ install the necessary jars.
 
 To use the web app, you need to run install.sh in csw-play-demo as well.
 
+This project also assumes that redis-server is running (http://redis.io/).
+
+
 ZeroMQ Native Lib Dependency
 ----------------------------
 
