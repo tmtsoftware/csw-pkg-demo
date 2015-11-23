@@ -41,7 +41,7 @@ lazy val defaultSettings = buildSettings ++ formatSettings ++ Seq(
 )
 
 // For standalone applications
-def packageSettings(summary: String, desc: String) = defaultSettings ++
+def packageSettings(name: String, summary: String, desc: String) = defaultSettings ++
   packagerSettings ++ packageArchetype.java_application ++ Seq(
   version in Rpm := Version,
   rpmRelease := "0",
@@ -51,7 +51,8 @@ def packageSettings(summary: String, desc: String) = defaultSettings ++
   rpmGroup := Some("CSW"),
   packageSummary := summary,
   packageDescription := desc,
-  bashScriptExtraDefines ++= Seq(s"addJava -DCSW_VERSION=$Version -Dakka.loglevel=DEBUG")
+  bashScriptExtraDefines ++= Seq(s"addJava -DCSW_VERSION=$Version"),
+  bashScriptExtraDefines ++= Seq(s"-Dapplication-name=$name")
 )
 
 def compile(deps: ModuleID*): Seq[ModuleID] = deps map (_ % "compile")
@@ -69,17 +70,17 @@ lazy val root = (project in file(".")).
   aggregate(assembly1, container1, hcd2, container2)
 
 lazy val assembly1 = project
-  .settings(packageSettings("Assembly Demo", "Example assembly"): _*)
+  .settings(packageSettings("assembly1", "Assembly Demo", "Example assembly"): _*)
   .settings(libraryDependencies ++= Seq(pkg))
 
 lazy val container1 = project
-  .settings(packageSettings("Container demo", "Example container"): _*)
+  .settings(packageSettings("container1", "Container demo", "Example container"): _*)
   .settings(libraryDependencies ++= Seq(containerCmd)) dependsOn assembly1
 
 lazy val hcd2 = project
-  .settings(packageSettings("HCD demo", "Example HCD"): _*)
+  .settings(packageSettings("hcd2", "HCD demo", "Example HCD"): _*)
   .settings(libraryDependencies ++= Seq(pkg, jeromq))
 
 lazy val container2 = project
-  .settings(packageSettings("Container demo", "Example container"): _*)
+  .settings(packageSettings("container2", "Container demo", "Example container"): _*)
   .settings(libraryDependencies ++= Seq(containerCmd)) dependsOn hcd2
