@@ -23,6 +23,8 @@ object Assembly1 {
 case class Assembly1(name: String, config: Config)
     extends Assembly with AssemblyController with LifecycleHandler {
 
+  log.info(s"XXX application-name = ${System.getProperty("application-name")}")
+
   // Actor waiting for current state variable to match demand state
   private var stateMatcherActor: Option[ActorRef] = None
 

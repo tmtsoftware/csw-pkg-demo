@@ -3,7 +3,8 @@ exec scala "$0" "$@"
 !#
 
 // Demonstrates starting the test containers using config files retrieved from the config service.
-// This script should be run from this dir (csw/install/bin).
+// This script should be run from this dir (csw/install/bin)
+// and assumes that it is in the shell path.
 // (Note: "ls".run runs ls in the background, while "ls".! runs ls and waits. )
 
 import scala.sys.process._

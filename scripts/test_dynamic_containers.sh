@@ -3,7 +3,8 @@ exec scala "$0" "$@"
 !#
 
 // Demonstrates dynamically generating the containers using scalas scripts with embedded dependency declarations.
-// This script should be run from this dir (csw/install/bin).
+// This script should be run from this dir (csw/install/bin)
+// and assumes that it is in the shell path.
 
 import scala.sys.process._
 

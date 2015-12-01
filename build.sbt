@@ -52,7 +52,7 @@ def packageSettings(name: String, summary: String, desc: String) = defaultSettin
   packageSummary := summary,
   packageDescription := desc,
   bashScriptExtraDefines ++= Seq(s"addJava -DCSW_VERSION=$Version"),
-  bashScriptExtraDefines ++= Seq(s"-Dapplication-name=$name")
+  bashScriptExtraDefines ++= Seq(s"addJava -Dapplication-name=$name")
 )
 
 def compile(deps: ModuleID*): Seq[ModuleID] = deps map (_ % "compile")

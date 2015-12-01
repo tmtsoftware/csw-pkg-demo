@@ -3,7 +3,7 @@ exec scala "$0" "$@"
 !#
 
 // Demonstrates starting the test components without containers along with the location service.
-// This script should be run from the csw install/bin directory, or with csw/install/bin in the shell path.
+// This script assumes that the csw/install/bin directory is in the shell path.
 
 import scala.sys.process._
 
