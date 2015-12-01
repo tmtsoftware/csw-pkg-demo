@@ -15,6 +15,8 @@ libraryDependencies ++= Seq(
 // Usage: container1s container1.conf
 //
 // Where container1.conf configures the container (see csw-pkg-demo/container1/src/main/resources/container1.conf)
+// (Note: Requires that the necessary dependencies are available, which currently means the csw source was build on
+//  this host)
 
 csw.services.apps.containerCmd.ContainerCmd(args)
 
