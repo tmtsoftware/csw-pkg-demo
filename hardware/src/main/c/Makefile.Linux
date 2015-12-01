@@ -6,6 +6,9 @@ CPP_OPTS   =-O2
 #LIBS       =-lczmq -lzmq
 LIBS       =-lzmq -lpthread
 
+# Note: Have to install required zmq-2.2 (for akka) from source (no longer available from zmq web site)
+# May have to install libuuid (uuid-dev)
+# May need to set LD_LIBRARY_PATH to /usr/local/lib
 
 all: mtserver2
 
