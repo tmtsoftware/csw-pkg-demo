@@ -9,7 +9,7 @@ test -d $dir || mkdir -p $dir/bin $dir/lib $dir/conf
 sbt publish-local stage
 for i in bin lib ; do cp -f */target/universal/stage/$i/* $dir/$i/; done
 rm -f $dir/bin/*.log.* $dir/bin/*.bat
-(cd hardware/src/main/c; make; cp mtserver2 ../../../../../install/bin/)
+(cd hardware/src/main/c; make -f Makefile.`uname`; cp mtserver2 ../../../../../install/bin/)
 
 chmod ugo+x scripts/*
 cp scripts/* $dir/bin/
