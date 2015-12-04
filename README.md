@@ -86,3 +86,7 @@ The HCDs both talk to the C/ZeroMQ based hardware simulation code and then set s
 variables to indicate the current state of the hardware. The assembly monitors these
 variables to determine when the config has been matched, so it can send the command
 status back to the requester (the web app in this case).
+
+The following diagram shows the relationships of the various assemblies and HCDs in this demo:
+
+![PkgTest diagram](doc/PkgTest.jpg)
