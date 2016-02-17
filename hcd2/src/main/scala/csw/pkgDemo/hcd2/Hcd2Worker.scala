@@ -3,7 +3,7 @@ package csw.pkgDemo.hcd2
 import akka.actor._
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
-import csw.services.kvs.{ TelemetryService, StateVariableStore, KvsSettings }
+import csw.services.kvs.{TelemetryService, StateVariableStore, KvsSettings}
 import csw.util.cfg.Configurations.StateVariable.CurrentState
 import csw.util.cfg.Configurations._
 import csw.util.cfg.Events.StatusEvent

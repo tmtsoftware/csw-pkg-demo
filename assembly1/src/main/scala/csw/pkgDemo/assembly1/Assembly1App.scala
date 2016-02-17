@@ -1,6 +1,6 @@
 package csw.pkgDemo.assembly1
 
-import csw.services.loc.{ ServiceType, ServiceId }
+import csw.services.loc.{ServiceType, ServiceId}
 import csw.services.pkg.Component
 
 /**
@@ -14,6 +14,7 @@ object Assembly1App extends App {
   val httpUri = None
   val services = List(
     ServiceId("HCD-2A", ServiceType.HCD),
-    ServiceId("HCD-2B", ServiceType.HCD))
+    ServiceId("HCD-2B", ServiceType.HCD)
+  )
   Component.create(props, serviceId, prefix, services)
 }

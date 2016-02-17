@@ -1,6 +1,6 @@
 package csw.pkgDemo.hcd2
 
-import akka.actor.{ Props, Actor, ActorLogging }
+import akka.actor.{Props, Actor, ActorLogging}
 import akka.util.ByteString
 import org.zeromq.ZMQ
 

@@ -1,13 +1,13 @@
 package csw.pkgDemo.assembly1
 
-import akka.actor.{ ActorRef, Props }
-import com.typesafe.config.{ ConfigFactory, Config }
-import csw.services.ccs.AssemblyController.{ Validation, Valid }
-import csw.services.ccs.{ HcdController, StateMatcherActor, AssemblyController }
+import akka.actor.{ActorRef, Props}
+import com.typesafe.config.{ConfigFactory, Config}
+import csw.services.ccs.AssemblyController.{Validation, Valid}
+import csw.services.ccs.{HcdController, StateMatcherActor, AssemblyController}
 import csw.services.loc.AccessType.AkkaType
 import csw.services.loc.LocationService.ResolvedService
 import csw.services.loc.ServiceRef
-import csw.services.pkg.{ Assembly, LifecycleHandler }
+import csw.services.pkg.{Assembly, LifecycleHandler}
 import csw.util.cfg.Configurations.StateVariable.DemandState
 import csw.util.cfg.Configurations.SetupConfigArg
 

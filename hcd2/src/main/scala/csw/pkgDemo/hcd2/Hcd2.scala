@@ -1,9 +1,9 @@
 package csw.pkgDemo.hcd2
 
 import akka.actor.Props
-import com.typesafe.config.{ ConfigFactory, Config }
+import com.typesafe.config.{ConfigFactory, Config}
 import csw.services.ccs.PeriodicHcdController
-import csw.services.pkg.{ LifecycleHandler, Hcd }
+import csw.services.pkg.{LifecycleHandler, Hcd}
 import csw.util.cfg.Key
 
 // A test HCD that is configured with the given name and config path
