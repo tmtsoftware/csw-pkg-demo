@@ -1,36 +1,31 @@
 package csw.pkgDemo.hcd2
 
 import akka.actor.Props
-import com.typesafe.config.{ConfigFactory, Config}
+import com.typesafe.config.{Config, ConfigFactory}
 import csw.services.ccs.PeriodicHcdController
-import csw.services.pkg.{LifecycleHandler, Hcd}
+import csw.services.pkg.Component.HcdInfo
+import csw.services.pkg.Supervisor._
+import csw.services.pkg.{Hcd, LifecycleHandler}
 import csw.util.cfg.Key
 
 // A test HCD that is configured with the given name and config path
 object Hcd2 {
   /**
    * Used to create the actor
-   * @param name the HCD's name
-   * @param config optional settings for the HCD
    */
-  def props(name: String, config: Config = ConfigFactory.empty()): Props = Props(classOf[Hcd2], name, config)
+  def props(info: HcdInfo): Props = Props(classOf[Hcd2], info)
 }
 
 /**
  * Test HCD
- * @param name the name of the HCD
- * @param config config file with settings for the HCD
  */
-case class Hcd2(name: String, config: Config) extends Hcd with PeriodicHcdController with LifecycleHandler {
-  val prefix = if (config.hasPath("prefix")) config.getString("prefix") else {
-    // Normally the HCD would know its prefix, but for the test we are reusing the same class for two HCDs
-    if (name == "HCD-2A") "tcs.mobie.blue.filter" else "tcs.mobie.blue.disperser"
-  }
-  val worker = context.actorOf(Hcd2Worker.props(prefix))
+case class Hcd2(info: HcdInfo) extends Hcd with PeriodicHcdController with LifecycleHandler {
+  val worker = context.actorOf(Hcd2Worker.props(info.prefix))
 
-  // Reads the "rate" from the config file and starts the periodic processing
-  // (process() method will be called at the given rate)
-  startProcessing(config)
+  lifecycle(supervisor)
+  processAt(info.rate)
+
+  def receive = controllerReceive orElse lifecycleHandlerReceive
 
   override def process(): Unit = {
     // Process all configs in the queue
