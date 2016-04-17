@@ -4,7 +4,7 @@ import sbt._
 import Dependencies._
 import Settings._
 
-lazy val root = (project in file(".")).
+lazy val cswPkgDemo = (project in file(".")).
   aggregate(assembly1, container1, hcd2, container2)
 
 lazy val assembly1 = project
