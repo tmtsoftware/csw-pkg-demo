@@ -4,9 +4,6 @@ import sbt._
 import Dependencies._
 import Settings._
 
-lazy val cswPkgDemo = (project in file(".")).
-  aggregate(assembly1, container1, hcd2, container2)
-
 lazy val assembly1 = project
   .enablePlugins(JavaAppPackaging)
   .settings(packageSettings("assembly1", "Assembly Demo", "Example assembly"): _*)
@@ -26,3 +23,7 @@ lazy val container2 = project
   .enablePlugins(JavaAppPackaging)
   .settings(packageSettings("container2", "Container demo", "Example container"): _*)
   .settings(libraryDependencies ++= Seq(containerCmd)) dependsOn hcd2
+
+lazy val cswPkgDemo = (project in file("."))
+  .settings(name := "CSW Package Demo")
+  .aggregate(assembly1, container1, hcd2, container2)

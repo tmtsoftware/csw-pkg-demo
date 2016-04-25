@@ -5,9 +5,14 @@
 dir=../install
 
 test -d $dir || mkdir -p $dir/bin $dir/lib $dir/conf
-#for i in hcd2 assembly1 container2 container1; do (cd $i; sbt publish-local stage); done
 sbt publish-local stage
-for i in bin lib ; do cp -f */target/universal/stage/$i/* $dir/$i/; done
+
+for i in bin lib ; do
+    for j in */target/universal/stage/$i/* ; do
+        cp -f $j $dir/$i
+    done
+done
+
 rm -f $dir/bin/*.log.* $dir/bin/*.bat
 (cd hardware/src/main/c; make -f Makefile.`uname`; cp mtserver2 ../../../../../install/bin/)
 
