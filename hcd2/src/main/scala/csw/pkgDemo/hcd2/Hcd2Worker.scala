@@ -3,7 +3,7 @@ package csw.pkgDemo.hcd2
 import akka.actor._
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
-import csw.util.cfg.Configurations.StateVariable.CurrentState
+import csw.util.cfg.StateVariable.CurrentState
 import csw.util.cfg.Configurations._
 import csw.util.cfg.StandardKeys
 import org.zeromq.ZMQ

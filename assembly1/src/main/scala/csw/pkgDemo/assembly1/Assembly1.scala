@@ -6,7 +6,7 @@ import csw.services.loc.LocationService.{Location, ResolvedAkkaLocation}
 import csw.services.pkg.Component.AssemblyInfo
 import csw.services.pkg.{Assembly, LifecycleHandler, Supervisor}
 import csw.util.akka.PublisherActor
-import csw.util.cfg.Configurations.StateVariable.{CurrentState, DemandState}
+import csw.util.cfg.StateVariable.{CurrentState, DemandState}
 import csw.util.cfg.Configurations.SetupConfigArg
 
 object Assembly1 {
