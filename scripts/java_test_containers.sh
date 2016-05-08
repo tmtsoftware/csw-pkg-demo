@@ -2,7 +2,7 @@
 exec scala "$0" "$@"
 !#
 
-// Demonstrates starting the test containers.
+// Demonstrates starting the java versions of the test containers.
 // This script assumes that the csw/install/bin directory is in the shell path.
 
 import scala.sys.process._
@@ -12,6 +12,6 @@ import scala.sys.process._
 "mtserver2 disperser".run
 
 // Start the containers with the default configuration
-"container1".run
-"container2".run
+"container1java".run
+"container2java".run
 
