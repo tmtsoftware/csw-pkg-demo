@@ -1,7 +1,7 @@
 CSW Command Service Package Demo
 ================================
 
-This project contains standalone applications for testing the command service, 
+This project contains standalone applications for testing the command service
 Container, Assembly and HCD components and is based on
 the document "OSW TN009 - TMT CSW PACKAGING SOFTWARE DESIGN DOCUMENT".
 
@@ -14,17 +14,6 @@ install the necessary jars.
 To use the web app, you need to run install.sh in csw-play-demo as well.
 
 This project also assumes that redis-server is running (http://redis.io/).
-
-
-ZeroMQ Native Lib Dependency
-----------------------------
-
-In this demo the hardware layer accessed by the HCDs is simulated by a
-C/ZeroMQ based process, which needs to be built separately using `make`.
-The hardware simulation server is called mtserver2 and the sources are under the "hardware" directory.
-The Akka ZeroMQ support currently requires ZeroMQ version 2.2.
-The Scala code picks up the shared library automatically if it is installed in /usr/lib or /usr/local/lib.
-The required library name on the Mac is libzmq.1.dylib.
 
 Subprojects
 ----------
