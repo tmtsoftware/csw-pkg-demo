@@ -20,7 +20,6 @@ object Hcd2App extends App {
   val hcdName = args(0)
   val prefix = if (hcdName == "HCD-2A") "tcs.mobie.blue.filter" else "tcs.mobie.blue.disperser"
   val className = "csw.pkgDemo.hcd2.Hcd2"
-  val componentId = ComponentId(hcdName, ComponentType.HCD)
   val hcdInfo = HcdInfo(hcdName, prefix, className, RegisterOnly, Set(AkkaType), 1.second)
   val supervisor = Supervisor(hcdInfo)
 }

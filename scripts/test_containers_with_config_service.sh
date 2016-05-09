@@ -6,7 +6,7 @@ exec scala "$0" "$@"
 // This script should be run from this dir (csw/install/bin)
 // and assumes that it is in the shell path.
 // (Note: "ls".run runs ls in the background, while "ls".! runs ls and waits. )
-// (Note: Requires that the necessary dependencies are available, which currently means the csw source was build on
+// (Note: Requires that the necessary dependencies are available, which currently means the csw source was built on
 //  this host)
 
 import scala.sys.process._
