@@ -43,15 +43,10 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
   log.info(s"For $zmqKey: using ZMQ URL = $url")
   val zmqClient = context.actorOf(ZmqClient.props(url))
 
-  //  //  // Use the telemetry service to pass info (XXX still needed?)
-  //  val telemetryService = TelemetryService(KvsSettings(context.system))
-
   // for the demo just assume positions start at 0, 0
   context.become(working(0, 0))
 
   override def receive: Receive = Actor.emptyBehavior
-  //  //  // Use the telemetry service to pass info (XXX still needed?)
-  //  val telemetryService = TelemetryService(KvsSettings(context.system))
 
   /**
    * Actor state while talking to the ZMQ process
@@ -73,7 +68,6 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
       log.info(s"ZMQ current pos: $pos")
       val value = choices(pos)
       context.parent ! CurrentState(prefix).set(key, value)
-      //      telemetryService.set(StatusEvent(prefix).set(key, value)) // XXX still needed?
       setPos(pos, demandPos)
 
     // Send the parent the current state

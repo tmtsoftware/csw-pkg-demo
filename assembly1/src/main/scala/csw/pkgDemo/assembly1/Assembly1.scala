@@ -9,13 +9,6 @@ import csw.util.akka.PublisherActor
 import csw.util.cfg.StateVariable.{CurrentState, DemandState}
 import csw.util.cfg.Configurations.SetupConfigArg
 
-//object Assembly1 {
-//  /**
-//   * Can be used to create the Assembly1 actor
-//   */
-//  def props(info: AssemblyInfo): Props = Props(classOf[Assembly1], info)
-//}
-
 /**
  * A test assembly that just forwards configs to HCDs based on prefix
  *
@@ -81,11 +74,6 @@ case class Assembly1(info: AssemblyInfo)
    * Overridden here to subscribe to status values from the HCDs.
    */
   override protected def allResolved(locations: Set[Location]): Unit = {
-    //    val x = locations.collect {
-    //      case r @ ResolvedAkkaLocation(connection, uri, prefix, actorRefOpt) ⇒ actorRefOpt
-    //    }
-    //    val hcds = x.flatten
-    //    hcds.foreach(_ ! PublisherActor.Subscribe)
     subscribe(locations)
   }
 }
