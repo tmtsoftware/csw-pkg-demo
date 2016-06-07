@@ -3,9 +3,8 @@ package csw.pkgDemo.hcd2
 import akka.actor._
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
-import csw.util.cfg.StateVariable.CurrentState
-import csw.util.cfg.Configurations._
-import csw.util.cfg.StandardKeys
+import csw.util.config.StateVariable.CurrentState
+import csw.util.config.Configurations._
 import org.zeromq.ZMQ
 
 import scala.language.postfixOps
@@ -14,9 +13,6 @@ object Hcd2Worker {
   def props(prefix: String): Props = Props(classOf[Hcd2Worker], prefix)
 
   val settings = ConfigFactory.load("zmq")
-
-  val FILTERS = Array[String]("None", "g_G0301", "r_G0303", "i_G0302", "z_G0304", "Z_G0322", "Y_G0323", "u_G0308")
-  val DISPERSERS = Array[String]("Mirror", "B1200_G5301", "R831_G5302", "B600_G5303", "B600_G5307", "R600_G5304", "R400_G5305", "R150_G5306")
 
   // Message requesting current state of HCD values
   case object RequestCurrentState
@@ -28,6 +24,7 @@ object Hcd2Worker {
  */
 class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
 
+  import Hcd2._
   import Hcd2Worker._
 
   // The key used to talk to ZML
@@ -35,8 +32,8 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
 
   // The key and list of choices used in configurations and CurrentState objects
   val (key, choices) = if (zmqKey == "filter")
-    (StandardKeys.filter, FILTERS)
-  else (StandardKeys.disperser, DISPERSERS)
+    (filterKey, FILTERS)
+  else (disperserKey, DISPERSERS)
 
   // Get the ZMQ client
   val url = settings.getString(s"zmq.$zmqKey.url")
@@ -57,7 +54,7 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
   def working(currentPos: Int, demandPos: Int): Receive = {
     // Received a SetupConfig (from the assembly): extract the value and send the new position to ZMQ
     case setupConfig: SetupConfig ⇒
-      setupConfig.get(key).foreach { value ⇒
+      setupConfig.get(key, 0).foreach { value ⇒
         val pos = choices.indexOf(value)
         setPos(currentPos, pos)
       }

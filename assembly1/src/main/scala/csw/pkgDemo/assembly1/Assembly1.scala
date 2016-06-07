@@ -1,13 +1,13 @@
 package csw.pkgDemo.assembly1
 
-import akka.actor.{ActorRef, Props}
-import csw.services.ccs.{AssemblyController, HcdController}
-import csw.services.loc.LocationService.{Location, ResolvedAkkaLocation}
+import akka.actor.ActorRef
+import csw.pkgDemo.hcd2.Hcd2
+import csw.services.ccs.AssemblyController
+import csw.services.loc.LocationService.Location
 import csw.services.pkg.Component.AssemblyInfo
 import csw.services.pkg.{Assembly, LifecycleHandler, Supervisor}
-import csw.util.akka.PublisherActor
-import csw.util.cfg.StateVariable.{CurrentState, DemandState}
-import csw.util.cfg.Configurations.SetupConfigArg
+import csw.util.config.StateVariable.CurrentState
+import csw.util.config.Configurations.SetupConfigArg
 
 /**
  * A test assembly that just forwards configs to HCDs based on prefix
@@ -52,11 +52,15 @@ case class Assembly1(info: AssemblyInfo)
   }
 
   /**
-   * Validates a received config arg
+   * Validates a received config arg. In this case, we just check that each config
+   * contains either a filter or a disperser key.
    */
   private def validate(config: SetupConfigArg): Validation = {
-    // TODO: add code to check if the config is valid
-    Valid
+    val result: Seq[Validation] = config.configs.map { c ⇒
+      if (c.exists(Hcd2.filterKey) || c.exists(Hcd2.disperserKey)) Valid
+      else Invalid("Expected a filter or disperser config")
+    }
+    result.find(!_.isValid).getOrElse(Valid)
   }
 
   override protected def setup(locationsResolved: Boolean, configArg: SetupConfigArg,
