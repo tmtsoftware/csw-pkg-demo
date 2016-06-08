@@ -6,7 +6,7 @@ import csw.services.ccs.AssemblyController
 import csw.services.loc.LocationService.Location
 import csw.services.pkg.Component.AssemblyInfo
 import csw.services.pkg.{Assembly, LifecycleHandler, Supervisor}
-import csw.util.config.StateVariable.CurrentState
+import csw.util.config.StateVariable._
 import csw.util.config.Configurations.SetupConfigArg
 
 /**
@@ -37,18 +37,15 @@ case class Assembly1(info: AssemblyInfo)
     case x               ⇒ log.error(s"Unexpected message: $x")
   }
 
-  // Current state received from one of the HCDs: For now just forward it to any subscribers.
-  // It might make more sense to create an Assembly state, built from the various HCD states and
-  // publish that to the subscribers... TODO
+  // Current state received from one of the HCDs: Send it, together with the other states,
+  // to the subscribers.
   private def updateCurrentState(s: CurrentState): Unit = {
-    notifySubscribers(s)
     stateMap += s.prefix → s
+    requestCurrent()
   }
 
-  // For now, when the current state is requested, send the HCD states.
-  // TODO: Use assembly specific state
   override protected def requestCurrent(): Unit = {
-    stateMap.values.foreach(notifySubscribers)
+    notifySubscribers(CurrentStates(stateMap.values.map(identity).toSeq))
   }
 
   /**
