@@ -18,5 +18,5 @@ libraryDependencies ++= Seq(
 // (Note: Requires that the necessary dependencies are available, which currently means the csw source was build on
 //  this host)
 
-csw.services.apps.containerCmd.ContainerCmd(args)
+csw.services.apps.containerCmd.ContainerCmd("Container1s", args)
 

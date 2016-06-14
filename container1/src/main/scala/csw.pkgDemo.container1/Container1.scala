@@ -7,5 +7,5 @@ import csw.services.apps.containerCmd.ContainerCmd
  */
 object Container1 extends App {
   val a = args // Required to avoid null args below
-  ContainerCmd(a, Some("container1.conf"))
+  ContainerCmd("container1", a, Some("container1.conf"))
 }
