@@ -22,7 +22,7 @@ import scala.sys.process._
 // (The -delete and -init options tell it to delete and create the local and main Git repos, so we start with a clean repo)
 "cs --delete".run 
 
-// Create the two container config files in the config service (TODO: add -config option)
+// Create the two container config files in the config service
 "csclient create test/container1.conf -i ../../csw-pkg-demo/container1/src/main/resources/container1.conf".!
 "csclient create test/container2.conf -i ../../csw-pkg-demo/container2/src/main/resources/container2.conf".!
 
