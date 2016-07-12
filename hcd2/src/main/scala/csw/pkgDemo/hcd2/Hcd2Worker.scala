@@ -3,9 +3,9 @@ package csw.pkgDemo.hcd2
 import akka.actor._
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
-import csw.util.config.StateVariable.CurrentState
 import csw.util.config.Configurations._
 import org.zeromq.ZMQ
+import csw.util.config.ConfigDSL._
 
 import scala.language.postfixOps
 
@@ -54,7 +54,7 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
   def working(currentPos: Int, demandPos: Int): Receive = {
     // Received a SetupConfig (from the assembly): extract the value and send the new position to ZMQ
     case setupConfig: SetupConfig ⇒
-      setupConfig.get(key, 0).foreach { value ⇒
+      setupConfig(key).values.foreach { value ⇒
         val pos = choices.indexOf(value)
         setPos(currentPos, pos)
       }
@@ -64,12 +64,12 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
       val pos = reply.decodeString(ZMQ.CHARSET.name()).toInt
       log.info(s"ZMQ current pos: $pos")
       val value = choices(pos)
-      context.parent ! CurrentState(prefix).set(key, value)
+      context.parent ! cs(prefix, key → value)
       setPos(pos, demandPos)
 
     // Send the parent the current state
     case RequestCurrentState ⇒
-      context.parent ! CurrentState(prefix).set(key, choices(currentPos))
+      context.parent ! cs(prefix, key → choices(currentPos))
 
     case x ⇒ log.error(s"Unexpected message $x")
   }
