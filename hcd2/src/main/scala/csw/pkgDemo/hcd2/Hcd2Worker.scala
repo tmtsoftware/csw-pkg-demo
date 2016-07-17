@@ -53,25 +53,25 @@ class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
    */
   def working(currentPos: Int, demandPos: Int): Receive = {
     // Received a SetupConfig (from the assembly): extract the value and send the new position to ZMQ
-    case setupConfig: SetupConfig ⇒
-      setupConfig(key).values.foreach { value ⇒
+    case setupConfig: SetupConfig =>
+      setupConfig(key).values.foreach { value =>
         val pos = choices.indexOf(value)
         setPos(currentPos, pos)
       }
 
     // The reply from ZMQ should be the index of the current filter or disperser
-    case reply: ByteString ⇒
+    case reply: ByteString =>
       val pos = reply.decodeString(ZMQ.CHARSET.name()).toInt
       log.info(s"ZMQ current pos: $pos")
       val value = choices(pos)
-      context.parent ! cs(prefix, key → value)
+      context.parent ! cs(prefix, key -> value)
       setPos(pos, demandPos)
 
     // Send the parent the current state
-    case RequestCurrentState ⇒
-      context.parent ! cs(prefix, key → choices(currentPos))
+    case RequestCurrentState =>
+      context.parent ! cs(prefix, key -> choices(currentPos))
 
-    case x ⇒ log.error(s"Unexpected message $x")
+    case x => log.error(s"Unexpected message $x")
   }
 
   // If the demand pos is not equal to the current pos, increment the position
