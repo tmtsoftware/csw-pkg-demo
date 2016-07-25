@@ -3,6 +3,7 @@ package csw.pkgDemo.hcd2
 import akka.actor._
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
+import csw.services.log.PrefixedActorLogging
 import csw.util.config.Configurations._
 import org.zeromq.ZMQ
 import csw.util.config.ConfigDSL._
@@ -22,7 +23,7 @@ object Hcd2Worker {
 /**
  * An actor that does the work of matching a configuration
  */
-class Hcd2Worker(prefix: String) extends Actor with ActorLogging {
+class Hcd2Worker(override val prefix: String) extends Actor with PrefixedActorLogging {
 
   import Hcd2._
   import Hcd2Worker._
