@@ -2,7 +2,7 @@ package csw.pkgDemo.hcd2
 
 import akka.actor._
 import akka.util.ByteString
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.{Config, ConfigFactory}
 import csw.services.log.PrefixedActorLogging
 import csw.util.config.Configurations._
 import org.zeromq.ZMQ
@@ -13,7 +13,7 @@ import scala.language.postfixOps
 object Hcd2Worker {
   def props(prefix: String): Props = Props(classOf[Hcd2Worker], prefix)
 
-  val settings = ConfigFactory.load("zmq")
+  val settings: Config = ConfigFactory.load("zmq")
 
   // Message requesting current state of HCD values
   case object RequestCurrentState
@@ -29,17 +29,17 @@ class Hcd2Worker(override val prefix: String) extends Actor with PrefixedActorLo
   import Hcd2Worker._
 
   // The key used to talk to ZML
-  val zmqKey = prefix.split('.').last
+  private val zmqKey = prefix.split('.').last
 
   // The key and list of choices used in configurations and CurrentState objects
-  val (key, choices) = if (zmqKey == "filter")
+  private val (key, choices) = if (zmqKey == "filter")
     (filterKey, FILTERS)
   else (disperserKey, DISPERSERS)
 
   // Get the ZMQ client
-  val url = settings.getString(s"zmq.$zmqKey.url")
+  private val url = settings.getString(s"zmq.$zmqKey.url")
   log.info(s"For $zmqKey: using ZMQ URL = $url")
-  val zmqClient = context.actorOf(ZmqClient.props(url))
+  private val zmqClient = context.actorOf(ZmqClient.props(url))
 
   // for the demo just assume positions start at 0, 0
   context.become(working(0, 0))

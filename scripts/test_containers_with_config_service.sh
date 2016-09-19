@@ -15,10 +15,7 @@ import scala.sys.process._
 "mtserver2 filter".run
 "mtserver2 disperser".run
 
-// Start the config service annex, which stores large/binary files
-"configserviceannex".run
-
-// Start the config service, creating temporary main and local repositories (TODO: add -config option)
+// Start the config service, creating temporary main and local repositories
 // (The -delete and -init options tell it to delete and create the local and main Git repos, so we start with a clean repo)
 "cs --delete".run 
 

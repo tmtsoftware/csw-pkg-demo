@@ -3,8 +3,8 @@ package csw.pkgDemo.assembly1
 import csw.services.loc.Connection.AkkaConnection
 import csw.services.loc.ConnectionType.{AkkaType, HttpType}
 import csw.services.loc.{Connection, _}
-import csw.services.pkg.Supervisor
-import csw.services.pkg.Component.{AssemblyInfo, RegisterAndTrackServices, RegisterOnly}
+import csw.services.pkg.Component.{AssemblyInfo, RegisterAndTrackServices}
+import csw.services.pkg.Supervisor3
 
 /**
  * Starts Assembly1 as a standalone application (as an alternative to starting it as part of Container1).
@@ -19,6 +19,6 @@ object Assembly1App extends App {
   val hcd2b = AkkaConnection(ComponentId("HCD-2B", ComponentType.HCD))
   val hcdConnections: Set[Connection] = Set(hcd2a, hcd2b)
   val assemblyInfo = AssemblyInfo(assemblyName, prefix, className, RegisterAndTrackServices, Set(AkkaType, HttpType), hcdConnections)
-  val supervisor = Supervisor(assemblyInfo)
+  val supervisor = Supervisor3(assemblyInfo)
 
 }

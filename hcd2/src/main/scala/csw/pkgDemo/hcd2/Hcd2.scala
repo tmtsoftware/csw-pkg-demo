@@ -1,19 +1,21 @@
 package csw.pkgDemo.hcd2
 
+import akka.actor.ActorRef
 import csw.services.ccs.HcdController
 import csw.services.pkg.Component.HcdInfo
-import csw.services.pkg.Supervisor._
+import csw.services.pkg.Supervisor3.{Initialized, Started}
 import csw.services.pkg.{Hcd, LifecycleHandler}
 import csw.util.config.Configurations.SetupConfig
 import csw.util.config.StringKey
 
 // A test HCD that is configured with the given name and config path
-case class Hcd2(info: HcdInfo) extends Hcd with HcdController with LifecycleHandler {
-  val worker = context.actorOf(Hcd2Worker.props(info.prefix))
+case class Hcd2(info: HcdInfo, supervisor: ActorRef) extends Hcd with HcdController with LifecycleHandler {
+  private val worker = context.actorOf(Hcd2Worker.props(info.prefix))
 
-  lifecycle(supervisor)
+  supervisor ! Initialized
+  supervisor ! Started
 
-  def receive = controllerReceive orElse lifecycleHandlerReceive
+  override def receive: Receive = controllerReceive orElse lifecycleHandlerReceive
 
   // Send the config to the worker for processing
   override protected def process(config: SetupConfig): Unit = {
@@ -50,11 +52,11 @@ object Hcd2 {
   /**
    * The available filters
    */
-  val FILTERS = Vector[String]("None", "g_G0301", "r_G0303", "i_G0302", "z_G0304", "Z_G0322", "Y_G0323", "u_G0308")
+  val FILTERS: Vector[String] = Vector[String]("None", "g_G0301", "r_G0303", "i_G0302", "z_G0304", "Z_G0322", "Y_G0323", "u_G0308")
 
   /**
    * The available dispersers
    */
-  val DISPERSERS = Vector[String]("Mirror", "B1200_G5301", "R831_G5302", "B600_G5303", "B600_G5307", "R600_G5304", "R400_G5305", "R150_G5306")
+  val DISPERSERS: Vector[String] = Vector[String]("Mirror", "B1200_G5301", "R831_G5302", "B600_G5303", "B600_G5307", "R600_G5304", "R400_G5305", "R150_G5306")
 }
 
