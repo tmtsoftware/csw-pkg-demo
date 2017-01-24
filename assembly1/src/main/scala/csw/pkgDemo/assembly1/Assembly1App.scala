@@ -3,8 +3,8 @@ package csw.pkgDemo.assembly1
 import csw.services.loc.Connection.AkkaConnection
 import csw.services.loc.ConnectionType.{AkkaType, HttpType}
 import csw.services.loc.{Connection, _}
+import csw.services.pkg.Component.{AssemblyInfo, RegisterAndTrackServices}
 import csw.services.pkg.Supervisor
-import csw.services.pkg.Component.{AssemblyInfo, RegisterAndTrackServices, RegisterOnly}
 
 /**
  * Starts Assembly1 as a standalone application (as an alternative to starting it as part of Container1).

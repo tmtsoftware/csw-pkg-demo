@@ -8,7 +8,7 @@ import Settings._
 lazy val assembly1 = project
   .enablePlugins(JavaAppPackaging)
   .settings(packageSettings("assembly1", "Assembly Demo", "Example assembly"): _*)
-  .settings(libraryDependencies ++= Seq(pkg))
+  .settings(libraryDependencies ++= Seq(pkg, ccs))
   .dependsOn(hcd2)
 
 lazy val container1 = project
@@ -19,7 +19,7 @@ lazy val container1 = project
 lazy val hcd2 = project
   .enablePlugins(JavaAppPackaging)
   .settings(packageSettings("hcd2", "HCD demo", "Example HCD"): _*)
-  .settings(libraryDependencies ++= Seq(pkg, jeromq))
+  .settings(libraryDependencies ++= Seq(pkg, ccs, jeromq))
 
 lazy val container2 = project
   .enablePlugins(JavaAppPackaging)

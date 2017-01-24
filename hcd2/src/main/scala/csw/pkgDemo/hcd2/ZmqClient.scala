@@ -11,7 +11,7 @@ object ZmqClient {
   case object Move
 
   // Message sent to ZMQ
-  val zmqMsg = ByteString("1", ZMQ.CHARSET.name()).toArray
+  val zmqMsg: Array[Byte] = ByteString("1", ZMQ.CHARSET.name()).toArray
 }
 
 /**
@@ -21,8 +21,8 @@ class ZmqClient(url: String) extends Actor with ActorLogging {
 
   import ZmqClient._
 
-  val zmqContext = ZMQ.context(1)
-  val socket = zmqContext.socket(ZMQ.REQ)
+  private val zmqContext = ZMQ.context(1)
+  private val socket = zmqContext.socket(ZMQ.REQ)
   socket.connect(url)
 
   override def receive: Receive = {
