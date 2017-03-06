@@ -35,8 +35,6 @@ case class Assembly1(info: AssemblyInfo, supervisor: ActorRef)
   trackerSubscriber ! LocationSubscriberActor.Subscribe
   LocationSubscriberActor.trackConnections(info.connections, trackerSubscriber)
 
-  supervisor ! Initialized
-
   override def receive: Receive = publisherReceive orElse controllerReceive orElse {
     // Receive the HCD's location
     case l: ResolvedAkkaLocation =>
@@ -44,7 +42,7 @@ case class Assembly1(info: AssemblyInfo, supervisor: ActorRef)
       if (l.actorRef.isDefined) {
         log.info(s"Got actorRef: ${l.actorRef.get}")
         if (connections.size == 2 && connections.values.forall(_.isResolved))
-          supervisor ! Started
+          supervisor ! Initialized
 
         // XXX TODO FIXME: replace with telemetry
         l.actorRef.get ! Subscribe
