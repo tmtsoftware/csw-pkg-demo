@@ -5,8 +5,8 @@ import csw.services.ccs.HcdController
 import csw.services.pkg.Component.HcdInfo
 import csw.services.pkg.Supervisor.Initialized
 import csw.services.pkg.Hcd
-import csw.util.config.Configurations.SetupConfig
-import csw.util.config.StringKey
+import csw.util.itemSet.ItemSets.Setup
+import csw.util.itemSet.StringKey
 
 // A test HCD that is configured with the given name and config path
 case class Hcd2(override val info: HcdInfo, supervisor: ActorRef) extends Hcd with HcdController {
@@ -17,8 +17,8 @@ case class Hcd2(override val info: HcdInfo, supervisor: ActorRef) extends Hcd wi
   override def receive: Receive = controllerReceive
 
   // Send the config to the worker for processing
-  override protected def process(config: SetupConfig): Unit = {
-    worker ! config
+  override protected def process(s: Setup): Unit = {
+    worker ! s
   }
 
   // Ask the worker actor to send us the current state (handled by parent trait)

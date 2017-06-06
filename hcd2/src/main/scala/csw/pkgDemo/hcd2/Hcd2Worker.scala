@@ -4,14 +4,14 @@ import akka.actor._
 import akka.util.ByteString
 import com.typesafe.config.{Config, ConfigFactory}
 import csw.services.log.PrefixedActorLogging
-import csw.util.config.Configurations._
+import csw.util.itemSet.ItemSets._
 import org.zeromq.ZMQ
-import csw.util.config.ConfigDSL._
+import csw.util.itemSet.ItemSetDsl._
 
 import scala.language.postfixOps
 
 object Hcd2Worker {
-  def props(prefix: String): Props = Props(classOf[Hcd2Worker], prefix)
+  def props(prefix: String): Props = Props(new Hcd2Worker(prefix))
 
   val settings: Config = ConfigFactory.load("zmq")
 
@@ -54,8 +54,8 @@ class Hcd2Worker(override val prefix: String) extends Actor with PrefixedActorLo
    */
   def working(currentPos: Int, demandPos: Int): Receive = {
     // Received a SetupConfig (from the assembly): extract the value and send the new position to ZMQ
-    case setupConfig: SetupConfig =>
-      setupConfig(key).values.foreach { value =>
+    case setup: Setup =>
+      setup(key).values.foreach { value =>
         val pos = choices.indexOf(value)
         setPos(currentPos, pos)
       }
