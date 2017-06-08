@@ -4,9 +4,9 @@ import akka.actor._
 import akka.util.ByteString
 import com.typesafe.config.{Config, ConfigFactory}
 import csw.services.log.PrefixedActorLogging
-import csw.util.itemSet.ItemSets._
+import csw.util.param.Parameters._
 import org.zeromq.ZMQ
-import csw.util.itemSet.ItemSetDsl._
+import csw.util.param.ParameterSetDsl._
 
 import scala.language.postfixOps
 

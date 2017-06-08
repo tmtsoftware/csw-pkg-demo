@@ -12,8 +12,8 @@ import csw.services.pkg.Supervisor._
 import csw.services.pkg.Assembly
 import csw.util.akka.PublisherActor
 import csw.util.akka.PublisherActor.Subscribe
-import csw.util.itemSet.StateVariable._
-import csw.util.itemSet.ItemSets.Setup
+import csw.util.param.StateVariable._
+import csw.util.param.Parameters.Setup
 
 /**
  * A test assembly that just forwards configs to HCDs based on prefix
@@ -69,7 +69,7 @@ case class Assembly1(info: AssemblyInfo, supervisor: ActorRef)
   // Current state received from one of the HCDs: Send it, together with the other states,
   // to the subscribers.
   private def updateCurrentState(s: CurrentState): Unit = {
-    stateMap += s.prefix -> s
+    stateMap += s.prefix.prefix -> s
     requestCurrent()
   }
 
@@ -83,7 +83,7 @@ case class Assembly1(info: AssemblyInfo, supervisor: ActorRef)
     // Returns validations for all
     val validation = validateOneSetupConfig(s)
     if (validation == Valid) {
-      for (hcdActorRef <- getActorRefs(s.prefix)) {
+      for (hcdActorRef <- getActorRefs(s.prefix.prefix)) {
         // Submit the config to the HCD
         hcdActorRef ! HcdController.Submit(s)
         // If a commandOriginator was given, start a matcher actor that will reply with the command status
@@ -111,6 +111,6 @@ case class Assembly1(info: AssemblyInfo, supervisor: ActorRef)
    */
   private def validateOneSetupConfig(s: Setup): Validation = {
     if (s.exists(Hcd2.filterKey) || s.exists(Hcd2.disperserKey)) Valid
-    else Invalid(WrongConfigKeyIssue("Expected a filter or disperser config"))
+    else Invalid(WrongPrefixIssue("Expected a filter or disperser config"))
   }
 }

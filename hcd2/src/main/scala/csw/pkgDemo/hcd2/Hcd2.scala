@@ -5,8 +5,8 @@ import csw.services.ccs.HcdController
 import csw.services.pkg.Component.HcdInfo
 import csw.services.pkg.Supervisor.Initialized
 import csw.services.pkg.Hcd
-import csw.util.itemSet.ItemSets.Setup
-import csw.util.itemSet.StringKey
+import csw.util.param.Parameters.Setup
+import csw.util.param.StringKey
 
 // A test HCD that is configured with the given name and config path
 case class Hcd2(override val info: HcdInfo, supervisor: ActorRef) extends Hcd with HcdController {
